@@ -1,4 +1,4 @@
-﻿package com.example.campbooking.common;
+package com.example.campbooking.common;
 
 public class BusinessException extends RuntimeException {
     private final Integer code;

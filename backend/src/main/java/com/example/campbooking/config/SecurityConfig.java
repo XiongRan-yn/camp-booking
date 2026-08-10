@@ -1,4 +1,4 @@
-﻿package com.example.campbooking.config;
+package com.example.campbooking.config;
 
 import com.example.campbooking.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;

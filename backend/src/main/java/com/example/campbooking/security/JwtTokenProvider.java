@@ -1,4 +1,4 @@
-﻿package com.example.campbooking.security;
+package com.example.campbooking.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

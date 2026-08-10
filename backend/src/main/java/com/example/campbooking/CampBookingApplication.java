@@ -1,4 +1,4 @@
-﻿package com.example.campbooking;
+package com.example.campbooking;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
