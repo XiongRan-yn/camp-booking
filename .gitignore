@@ -1,0 +1,35 @@
+﻿# Dependencies
+node_modules/
+
+# Build output
+frontend/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Java
+backend/target/
+*.class
+*.jar
+*.war
+
+# H2 database files
+*.mv.db
+*.trace.db
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temp
+tmp/
+temp/
