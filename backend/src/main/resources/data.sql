@@ -1,55 +1,36 @@
--- ============================================
--- 种子数据
--- ============================================
-
--- 用户（密码 123456 的 BCrypt 加密值）
+-- Seed Data
 INSERT INTO users (username, password, nickname, role) VALUES
-('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5Eh', '管理员', 'admin'),
-('test', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5Eh', '测试用户', 'user');
+('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5Eh', 'admin', 'admin'),
+('test', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5Eh', 'testuser', 'user');
 
--- 研学营商品
 INSERT INTO products (title, category, sub_category, min_price, max_price, stock, tags) VALUES
-('博物研学独立营', 'camp', '科技营', 299.00, 499.00, 50, '["亲子","6-12岁"]'),
-('户外探险体验营', 'camp', '户外营', 399.00, 599.00, 30, '["亲子","8-14岁"]'),
-('小小科学家实验营', 'camp', '科学营', 199.00, 399.00, 40, '["独立营","5-10岁"]'),
-('非遗文化传承营', 'camp', '文化营', 259.00, 459.00, 35, '["亲子","7-15岁"]');
+('study camp 1', 'camp', 'tech', 299.00, 499.00, 50, '["kids","6-12"]'),
+('outdoor camp', 'camp', 'outdoor', 399.00, 599.00, 30, '["kids","8-14"]'),
+('science camp', 'camp', 'science', 199.00, 399.00, 40, '["solo","5-10"]'),
+('culture camp', 'camp', 'culture', 259.00, 459.00, 35, '["kids","7-15"]'),
+('mountain hotel', 'hotel', 'mountain', 388.00, 688.00, 20, '["mountain","big bed"]'),
+('lake hotel', 'hotel', 'lake', 428.00, 728.00, 15, '["lake","family"]'),
+('old town inn', 'hotel', 'town', 288.00, 488.00, 25, '["town","standard"]'),
+('hot spring hotel', 'hotel', 'spring', 588.00, 888.00, 10, '["spring","luxury"]');
 
--- 民宿商品
-INSERT INTO products (title, category, sub_category, min_price, max_price, stock, tags) VALUES
-('山景度假民宿', 'hotel', '山景', 388.00, 688.00, 20, '["山景","大床房"]'),
-('湖畔亲子民宿', 'hotel', '湖景', 428.00, 728.00, 15, '["湖景","亲子"]'),
-('古镇特色客栈', 'hotel', '古镇', 288.00, 488.00, 25, '["古镇","标准间"]'),
-('田园温泉民宿', 'hotel', '温泉', 588.00, 888.00, 10, '["温泉","豪华"]');
-
--- 商品规格
 INSERT INTO product_specs (product_id, name, price, original_price, stock) VALUES
-(1, '标准价', 499.00, 599.00, 30),
-(1, '早鸟优惠价', 299.00, NULL, 20),
-(2, '标准价', 599.00, NULL, 20),
-(2, '早鸟优惠价', 399.00, 499.00, 10),
-(3, '标准价', 399.00, NULL, 25),
-(3, '两人同行价', 199.00, 299.00, 15),
-(4, '标准价', 459.00, NULL, 20),
-(4, '早鸟优惠价', 259.00, 359.00, 15),
-(5, '标准大床房', 688.00, NULL, 10),
-(5, '特惠大床房', 388.00, 488.00, 10),
-(6, '标准亲子房', 728.00, NULL, 8),
-(6, '普通亲子房', 428.00, 528.00, 7),
-(7, '标准间', 488.00, NULL, 15),
-(7, '特惠标准间', 288.00, 388.00, 10),
-(8, '豪华温泉房', 888.00, NULL, 5),
-(8, '标准温泉房', 588.00, 688.00, 5);
+(1, 'standard', 499.00, 599.00, 30),(1, 'early bird', 299.00, NULL, 20),
+(2, 'standard', 599.00, NULL, 20),(2, 'early bird', 399.00, 499.00, 10),
+(3, 'standard', 399.00, NULL, 25),(3, 'group', 199.00, 299.00, 15),
+(4, 'standard', 459.00, NULL, 20),(4, 'early bird', 259.00, 359.00, 15),
+(5, 'big bed', 688.00, NULL, 10),(5, 'economy', 388.00, 488.00, 10),
+(6, 'family room', 728.00, NULL, 8),(6, 'standard', 428.00, 528.00, 7),
+(7, 'standard', 488.00, NULL, 15),(7, 'economy', 288.00, 388.00, 10),
+(8, 'luxury', 888.00, NULL, 5),(8, 'standard', 588.00, 688.00, 5);
 
--- 优惠券
 INSERT INTO coupons (title, type, discount_value, min_amount, total_count, valid_days, start_time, end_time) VALUES
-('新人专享券', 'cash', 50.00, 200.00, 500, 7, '2026-08-01 00:00:00', '2026-12-31 23:59:59'),
-('满减优惠券', 'cash', 30.00, 300.00, 300, 14, '2026-08-01 00:00:00', '2026-12-31 23:59:59'),
-('研学营专属券', 'cash', 100.00, 500.00, 200, 7, '2026-08-01 00:00:00', '2026-12-31 23:59:59'),
-('民宿体验券', 'discount', 0.85, 0, 100, 30, '2026-08-01 00:00:00', '2026-12-31 23:59:59'),
-('积分加倍券', 'gift', 100.00, 0, 200, 30, '2026-08-01 00:00:00', '2026-12-31 23:59:59');
+('new user coupon', 'cash', 50.00, 200.00, 500, 7, '2026-08-01 00:00:00', '2026-12-31 23:59:59'),
+('discount 30', 'cash', 30.00, 300.00, 300, 14, '2026-08-01 00:00:00', '2026-12-31 23:59:59'),
+('camp coupon', 'cash', 100.00, 500.00, 200, 7, '2026-08-01 00:00:00', '2026-12-31 23:59:59'),
+('hotel discount', 'discount', 0.85, 0, 100, 30, '2026-08-01 00:00:00', '2026-12-31 23:59:59'),
+('points bonus', 'gift', 100.00, 0, 200, 30, '2026-08-01 00:00:00', '2026-12-31 23:59:59');
 
--- 兑换码
-INSERT INTO redemption_codes (code, type, value) VALUES
+INSERT INTO redemption_codes (code, type, code_value) VALUES
 ('WELCOME2024', 'coupon', '1'),
 ('SUMMER2024', 'points', '200'),
 ('CAMP2024', 'coupon', '3'),

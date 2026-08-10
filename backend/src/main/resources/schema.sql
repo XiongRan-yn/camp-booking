@@ -1,8 +1,7 @@
 -- ============================================
--- 研学营/民宿预订系统 — 数据库初始化脚本
+-- Database Schema
 -- ============================================
 
--- 1. 用户表
 CREATE TABLE IF NOT EXISTS users (
     id             BIGINT AUTO_INCREMENT PRIMARY KEY,
     username       VARCHAR(50)  NOT NULL UNIQUE,
@@ -17,7 +16,6 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at     TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. 商品表
 CREATE TABLE IF NOT EXISTS products (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     title         VARCHAR(200)  NOT NULL,
@@ -31,13 +29,12 @@ CREATE TABLE IF NOT EXISTS products (
     max_price     DECIMAL(10,2) DEFAULT 0,
     stock         INT           DEFAULT 0,
     status        VARCHAR(10)   DEFAULT 'on',
-    is_full       TINYINT       DEFAULT 0,
+    is_full       SMALLINT      DEFAULT 0,
     created_at    TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category, status);
 
--- 3. 商品规格表
 CREATE TABLE IF NOT EXISTS product_specs (
     id             BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_id     BIGINT        NOT NULL,
@@ -49,7 +46,6 @@ CREATE TABLE IF NOT EXISTS product_specs (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- 4. 订单表
 CREATE TABLE IF NOT EXISTS orders (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     order_no        VARCHAR(32)   NOT NULL UNIQUE,
@@ -77,7 +73,6 @@ CREATE TABLE IF NOT EXISTS orders (
 );
 CREATE INDEX IF NOT EXISTS idx_orders_user_status ON orders(user_id, status);
 
--- 5. 优惠券模板表
 CREATE TABLE IF NOT EXISTS coupons (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     title           VARCHAR(100)  NOT NULL,
@@ -93,7 +88,6 @@ CREATE TABLE IF NOT EXISTS coupons (
     end_time        TIMESTAMP     NOT NULL
 );
 
--- 6. 用户卡券表
 CREATE TABLE IF NOT EXISTS user_coupons (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id      BIGINT       NOT NULL,
@@ -108,7 +102,6 @@ CREATE TABLE IF NOT EXISTS user_coupons (
 );
 CREATE INDEX IF NOT EXISTS idx_uc_user_status ON user_coupons(user_id, status);
 
--- 7. 积分流水表
 CREATE TABLE IF NOT EXISTS points_records (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id    BIGINT      NOT NULL,
@@ -120,7 +113,6 @@ CREATE TABLE IF NOT EXISTS points_records (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- 8. 收藏表
 CREATE TABLE IF NOT EXISTS favorites (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id     BIGINT      NOT NULL,
@@ -131,13 +123,12 @@ CREATE TABLE IF NOT EXISTS favorites (
     UNIQUE (user_id, target_id, target_type)
 );
 
--- 9. 评价表
 CREATE TABLE IF NOT EXISTS reviews (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id    BIGINT      NOT NULL,
     product_id BIGINT      NOT NULL,
     order_id   BIGINT      NOT NULL,
-    rating     TINYINT     NOT NULL,
+    rating     SMALLINT    NOT NULL,
     content    TEXT        DEFAULT NULL,
     images     TEXT        DEFAULT NULL,
     type       VARCHAR(20) DEFAULT 'hotel',
@@ -147,7 +138,6 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (order_id)   REFERENCES orders(id)
 );
 
--- 10. 出行人信息表
 CREATE TABLE IF NOT EXISTS travelers (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id    BIGINT      NOT NULL,
@@ -161,19 +151,17 @@ CREATE TABLE IF NOT EXISTS travelers (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- 11. 兑换码表
 CREATE TABLE IF NOT EXISTS redemption_codes (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     code       VARCHAR(32)  NOT NULL UNIQUE,
     type       VARCHAR(20)  NOT NULL,
-    value      VARCHAR(200) NOT NULL,
-    is_used    TINYINT      DEFAULT 0,
+    code_value VARCHAR(200) NOT NULL,
+    is_used    SMALLINT     DEFAULT 0,
     used_by    BIGINT       DEFAULT NULL,
     used_at    TIMESTAMP    DEFAULT NULL,
     created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
--- 12. 反馈投诉表
 CREATE TABLE IF NOT EXISTS feedbacks (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id    BIGINT       NOT NULL,
