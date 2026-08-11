@@ -1,4 +1,4 @@
-﻿/* 文本截断 */
+/* 文本截断 */
 .text-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;

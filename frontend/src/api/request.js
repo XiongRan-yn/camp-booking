@@ -1,4 +1,4 @@
-﻿import axios from "axios";
+import axios from "axios";
 import { useUserStore } from "@/stores/user";
 import router from "@/router";
 
