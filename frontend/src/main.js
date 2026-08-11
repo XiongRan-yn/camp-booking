@@ -7,8 +7,11 @@ import App from "./App.vue";
 import "./styles/reset.css";
 import "./styles/variables.css";
 import "./styles/common.css";
+import Vant from "vant";
+import "vant/lib/index.css";
 
 const app = createApp(App);
 app.use(createPinia());
 app.use(router);
+app.use(Vant);
 app.mount("#app");
