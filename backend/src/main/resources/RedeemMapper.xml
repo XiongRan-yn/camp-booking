@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.campbooking.g.mapper.RedeemMapper">
+
+    <resultMap id="CouponResultMap" type="com.example.camp booking.g.entity.Coupon">
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="value" property="value"/>
+        <result column="valid_days" property="validDays"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <resultMap id="UserCouponResultMap" type="com.example.campbooking.g.entity.UserCoupon">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="code" property="code"/>
+        <result column="status" property="status"/>
+        <result column="expire_at" property="expireAt"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <insert id="insertCoupon" parameterType="com.example.campbooking.g.entity.Coupon"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO coupons (code, type, name, value, valid_days, created_at)
+        VALUES (#{code}, #{type}, #{name}, #{value}, #{validDays}, #{createdAt})
+    </insert>
+
+    <insert id="insertUserCoupon" parameterType="com.example.campbooking.g.entity.UserCoupon"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_coupons (user_id, coupon_id, code, status, expire_at, created_at)
+        VALUES (#{userId}, #{couponId}, #{code}, #{status}, #{expireAt}, #{createdAt})
+    </insert>
+
+    <select id="selectCouponByCode" resultMap="CouponResultMap" parameterType="java.lang.String">
+        SELECT id, code, type, name, value, valid_days, created_at
+        FROM coupons
+        WHERE code = #{code}
+        LIMIT 1
+    </select>
+
+</mapper>

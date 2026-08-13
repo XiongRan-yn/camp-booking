@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.campbooking.g.mapper.ReviewMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.campbooking.g.entity.Review">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="type" property="type"/>
+        <result column="target_id" property="targetId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="rating" property="rating"/>
+        <result column="content" property="content"/>
+        <result column="images" property="images"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <select id="selectByTarget" resultMap="BaseResultMap">
+        SELECT id, user_id, type, target_id, order_id, rating, content, images, created_at
+        FROM reviews
+        WHERE type = #{targetType}
+        AND target_id = #{targetId}
+        ORDER BY id DESC
+    </select>
+
+</mapper>
