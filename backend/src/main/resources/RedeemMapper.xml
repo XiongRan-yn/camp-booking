@@ -5,32 +5,35 @@
 
     <resultMap id="CouponResultMap" type="com.example.campbooking.g.entity.Coupon">
         <id column="id" property="id"/>
+        <result column="title" property="title"/>
         <result column="type" property="type"/>
         <result column="valid_days" property="validDays"/>
-        <result column="created_at" property="createdAt"/>
     </resultMap>
 
     <resultMap id="UserCouponResultMap" type="com.example.campbooking.g.entity.UserCoupon">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="coupon_id" property="couponId"/>
+        <result column="coupon_title" property="couponTitle"/>
         <result column="status" property="status"/>
+        <result column="received_at" property="receivedAt"/>
+        <result column="used_at" property="usedAt"/>
         <result column="expire_at" property="expireAt"/>
-        <result column="created_at" property="createdAt"/>
     </resultMap>
 
     <!-- 按 coupons.id 查券模板（兑换码表 code_value 存的即是优惠券 id） -->
     <select id="selectCouponById" resultMap="CouponResultMap" parameterType="java.lang.Long">
-        SELECT id, type, valid_days, created_at
+        SELECT id, title, type, valid_days
         FROM coupons
         WHERE id = #{id}
         LIMIT 1
     </select>
 
+    <!-- coupon_title 为 NOT NULL；received_at 有默认值，不写 -->
     <insert id="insertUserCoupon" parameterType="com.example.campbooking.g.entity.UserCoupon"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user_coupons (user_id, coupon_id, status, expire_at, created_at)
-        VALUES (#{userId}, #{couponId}, #{status}, #{expireAt}, #{createdAt})
+        INSERT INTO user_coupons (user_id, coupon_id, coupon_title, status, expire_at)
+        VALUES (#{userId}, #{couponId}, #{couponTitle}, #{status}, #{expireAt})
     </insert>
 
 </mapper>
