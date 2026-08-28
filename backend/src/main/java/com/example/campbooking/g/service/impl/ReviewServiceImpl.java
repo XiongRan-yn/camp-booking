@@ -18,27 +18,31 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     private ReviewMapper reviewMapper;
 
+    // TODO(F模块联调)：引入 F 的 OrderMapper 后取消注释并补「已支付才能评价」校验
+    // @Autowired
+    // private com.example.campbooking.mapper.OrderMapper orderMapper;  // 包名按 F 真实位置调整
+
     @Override
     public void add(ReviewRequest request) {
         Long userId = SecurityUtils.getCurrentUserId();
 
-        // TODO(G模块联调)：F 模块交付后补齐「已支付订单才能评价」校验。
-        // 示例（需引入 OrderMapper / Orders 表，联调前先注释掉自测）：
+        // TODO(F模块联调)：F 交付后补齐「已支付订单才能评价」（orderId 已由 @NotNull 保证非空）。
         // Order order = orderMapper.selectById(request.getOrderId());
         // if (order == null || !order.getUserId().equals(userId)) {
         //     throw new BusinessException(403, "只能评价本人的订单");
         // }
         // Object status = order.getStatus();
-        // if (!(status instanceof String && "paid".equals(status))
-        //     && !(status instanceof Number && ((Number) status).intValue() == 2)) {
+        // boolean paid = (status instanceof String && "paid".equals(status))
+        //              || (status instanceof Number && ((Number) status).intValue() == 2);
+        // if (!paid) {
         //     throw new BusinessException(409, "订单未支付，不能评价");
         // }
 
         Review review = new Review();
         review.setUserId(userId);
         review.setType(request.getType());
-        review.setTargetId(request.getTargetId());
-        review.setOrderId(request.getOrderId());
+        review.setProductId(request.getProductId());   // targetId 对应 reviews.product_id
+        review.setOrderId(request.getOrderId());       // 真实订单，必传
         review.setRating(request.getRating());
         review.setContent(request.getContent());
         review.setImages(request.getImages());

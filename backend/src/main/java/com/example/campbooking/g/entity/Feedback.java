@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * 意见反馈表 feedbacks。
+ * 真实列 email（非 contact），为选填联系方式。
  */
 @TableName("feedbacks")
 public class Feedback {
@@ -21,8 +22,8 @@ public class Feedback {
 
     private String content;
 
-    /** 选填：联系方式 */
-    private String contact;
+    /** 真实列 email（非 contact），选填 */
+    private String email;
 
     @TableField("created_at")
     private LocalDateTime createdAt;
@@ -51,12 +52,12 @@ public class Feedback {
         this.content = content;
     }
 
-    public String getContact() {
-        return contact;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getCreatedAt() {

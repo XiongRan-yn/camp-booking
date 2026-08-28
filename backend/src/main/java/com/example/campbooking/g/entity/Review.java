@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 /**
  * 评价表 reviews。
  * type 固定为 dynamic（我的动态）或 hotel（酒店评价），NOT camp。
- * orderId 关联 F 模块订单表，用于校验「已支付才能评价」，可空（联调前自测可手动填）。
+ * product_id 为真实列（NOT NULL），原 target_id 已改名。
+ * order_id 关联 F 模块订单表，必须传真实订单（校验「已支付才能评价」留 TODO）。
  */
 @TableName("reviews")
 public class Review {
@@ -24,8 +25,9 @@ public class Review {
     /** dynamic | hotel */
     private String type;
 
-    @TableField("target_id")
-    private Long targetId;
+    /** 真实列 product_id（NOT NULL），原 target_id */
+    @TableField("product_id")
+    private Long productId;
 
     @TableField("order_id")
     private Long orderId;
@@ -64,12 +66,12 @@ public class Review {
         this.type = type;
     }
 
-    public Long getTargetId() {
-        return targetId;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Long getOrderId() {
