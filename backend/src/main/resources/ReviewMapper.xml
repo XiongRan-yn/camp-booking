@@ -7,7 +7,7 @@
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="type" property="type"/>
-        <result column="target_id" property="targetId"/>
+        <result column="product_id" property="productId"/>
         <result column="order_id" property="orderId"/>
         <result column="rating" property="rating"/>
         <result column="content" property="content"/>
@@ -16,10 +16,10 @@
     </resultMap>
 
     <select id="selectByTarget" resultMap="BaseResultMap">
-        SELECT id, user_id, type, target_id, order_id, rating, content, images, created_at
+        SELECT id, user_id, type, product_id, order_id, rating, content, images, created_at
         FROM reviews
         WHERE type = #{targetType}
-        AND target_id = #{targetId}
+        AND product_id = #{targetId}
         ORDER BY id DESC
     </select>
 

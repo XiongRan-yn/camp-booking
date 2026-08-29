@@ -6,17 +6,16 @@
     <resultMap id="BaseResultMap" type="com.example.campbooking.g.entity.RedemptionCode">
         <id column="id" property="id"/>
         <result column="code" property="code"/>
+        <result column="code_value" property="codeValue"/>
         <result column="type" property="type"/>
-        <result column="value" property="value"/>
-        <result column="used" property="used"/>
+        <result column="is_used" property="isUsed"/>
         <result column="used_by" property="usedBy"/>
         <result column="used_at" property="usedAt"/>
-        <result column="expire_at" property="expireAt"/>
         <result column="created_at" property="createdAt"/>
     </resultMap>
 
     <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
-        SELECT id, code, type, value, used, used_by, used_at, expire_at, created_at
+        SELECT id, code, code_value, type, is_used, used_by, used_at, created_at
         FROM redemption_codes
         WHERE code = #{code}
         LIMIT 1
@@ -24,7 +23,7 @@
 
     <update id="markUsed">
         UPDATE redemption_codes
-        SET used = 1,
+        SET is_used = 1,
         used_by = #{usedBy},
         used_at = #{usedAt}
         WHERE id = #{id}

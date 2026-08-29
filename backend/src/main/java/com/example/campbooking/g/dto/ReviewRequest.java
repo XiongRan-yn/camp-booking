@@ -8,7 +8,8 @@ import jakarta.validation.constraints.Pattern;
 
 /**
  * 评价请求。
- * type 枚举固定为 dynamic（我的动态）或 hotel（酒店评价），NOT camp。
+ * type 固定为 dynamic（我的动态）或 hotel（酒店评价），NOT camp。
+ * targetId 对应 reviews.product_id；orderId 必须传真实订单。
  */
 public class ReviewRequest {
 
@@ -16,10 +17,11 @@ public class ReviewRequest {
     @Pattern(regexp = "^(hotel|dynamic)$", message = "type 仅支持 hotel 或 dynamic")
     private String type;
 
-    @NotNull(message = "targetId 不能为空")
-    private Long targetId;
+    @NotNull(message = "productId 不能为空")
+    private Long productId;
 
-    /** 关联订单 ID（F 模块订单表），用于校验「已支付才能评价」。联调前可空。 */
+    /** 关联订单 ID（F 模块订单表），必须传真实订单，用于校验「已支付才能评价」 */
+    @NotNull(message = "orderId 不能为空（需传真实订单）")
     private Long orderId;
 
     @NotNull(message = "rating 不能为空")
@@ -30,7 +32,7 @@ public class ReviewRequest {
     @NotBlank(message = "content 不能为空")
     private String content;
 
-    /** 图片 URL，多个以英文逗号分隔，可空。 */
+    /** 图片 URL，多个以英文逗号分隔，可空 */
     private String images;
 
     public String getType() {
@@ -39,14 +41,6 @@ public class ReviewRequest {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
     }
 
     public Long getOrderId() {
@@ -79,5 +73,13 @@ public class ReviewRequest {
 
     public void setImages(String images) {
         this.images = images;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }

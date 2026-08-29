@@ -21,7 +21,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         Feedback feedback = new Feedback();
         feedback.setUserId(SecurityUtils.getCurrentUserId());
         feedback.setContent(request.getContent());
-        feedback.setContact(request.getContact());
+        feedback.setEmail(request.getEmail());
         feedback.setCreatedAt(LocalDateTime.now());
         feedbackMapper.insert(feedback);
     }

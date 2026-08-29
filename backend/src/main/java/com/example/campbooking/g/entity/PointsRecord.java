@@ -8,11 +8,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 
 /**
- * 意见反馈表 feedbacks。
- * 真实列 email（非 contact），为选填联系方式。
+ * 积分流水表 points_records。G 模块兑换积分时写入。
  */
-@TableName("feedbacks")
-public class Feedback {
+@TableName("points_records")
+public class PointsRecord {
 
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -20,10 +19,13 @@ public class Feedback {
     @TableField("user_id")
     private Long userId;
 
-    private String content;
+    private Integer amount;
 
-    /** 真实列 email（非 contact），选填 */
-    private String email;
+    private String type;
+
+    private String source;
+
+    private String remark;
 
     @TableField("created_at")
     private LocalDateTime createdAt;
@@ -44,20 +46,36 @@ public class Feedback {
         this.userId = userId;
     }
 
-    public String getContent() {
-        return content;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
-    public String getEmail() {
-        return email;
+    public String getType() {
+        return type;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public LocalDateTime getCreatedAt() {
