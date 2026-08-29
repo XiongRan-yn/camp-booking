@@ -36,7 +36,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = new Review();
         review.setUserId(userId);
         review.setType(request.getType());
-        review.setProductId(request.getTargetId());   // targetId 对应 reviews.product_id
+        review.setProductId(request.getProductId());   // productId 对应 reviews.product_id
         review.setOrderId(request.getOrderId());
         review.setRating(request.getRating());
         review.setContent(request.getContent());

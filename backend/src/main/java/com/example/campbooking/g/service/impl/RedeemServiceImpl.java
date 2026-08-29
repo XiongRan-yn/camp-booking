@@ -1,7 +1,7 @@
 package com.example.campbooking.g.service.impl;
 
 import com.example.campbooking.common.BusinessException;
-import com.example.campbooking.entity.PointsRecord;
+// import com.example.campbooking.entity.PointsRecord;
 import com.example.campbooking.entity.User;
 import com.example.campbooking.g.dto.RedeemRequest;
 import com.example.campbooking.g.entity.Coupon;
@@ -12,7 +12,7 @@ import com.example.campbooking.g.mapper.RedemptionCodeMapper;
 import com.example.campbooking.g.security.SecurityUtils;
 import com.example.campbooking.g.service.RedeemService;
 import com.example.campbooking.g.vo.RedeemResultVO;
-import com.example.campbooking.mapper.PointsRecordMapper;
+// import com.example.campbooking.mapper.PointsRecordMapper;
 import com.example.campbooking.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +32,9 @@ public class RedeemServiceImpl implements RedeemService {
     @Autowired
     private UserMapper userMapper;
 
-    /** F 模块：写 points_records 积分流水（G 不得自建同名类，避免 Bean 冲突） */
-    @Autowired
-    private PointsRecordMapper pointsRecordMapper;
+//    /** F 模块：写 points_records 积分流水（G 不得自建同名类，避免 Bean 冲突） */
+//    @Autowired
+//    private PointsRecordMapper pointsRecordMapper;
 
     @Override
     public RedeemResultVO redeem(RedeemRequest request) {
@@ -84,14 +84,14 @@ public class RedeemServiceImpl implements RedeemService {
                     userMapper.updateById(user);
                 }
                 // 2) 写积分流水 points_records（用 F 的实体/Mapper）
-                PointsRecord pr = new PointsRecord();
-                pr.setUserId(userId);
-                pr.setAmount(gained);
-                pr.setType("earn");
-                pr.setSource(code);
-                pr.setRemark("兑换码积分");
-                pr.setCreatedAt(now);
-                pointsRecordMapper.insert(pr);
+//                PointsRecord pr = new PointsRecord();
+//                pr.setUserId(userId);
+//                pr.setAmount(gained);
+//                pr.setType("earn");
+//                pr.setSource(code);
+//                pr.setRemark("兑换码积分");
+//                pr.setCreatedAt(now);
+//                pointsRecordMapper.insert(pr);
 
                 redemptionCodeMapper.markUsed(rc.getId(), userId, now);
                 RedeemResultVO vo = new RedeemResultVO();
