@@ -17,4 +17,14 @@ public interface RedeemMapper {
 
     /** 写入用户券（user_coupons 无 code 列，status 由调用方写 "usable"） */
     int insertUserCoupon(UserCoupon userCoupon);
+
+    /**
+     * 写积分流水 points_records（type 固定 'earn'，created_at 走数据库默认值）。
+     * 这是 F 的 PointsRecordMapper 未并入前的 G 侧兜底：直写同一张表、列完全一致，
+     * F 的 /api/points/records 上线后即可读到；F 代码并入后改由 F 的 Mapper 写入。
+     */
+    int insertPointsRecord(@Param("userId") Long userId,
+                           @Param("amount") int amount,
+                           @Param("source") String source,
+                           @Param("remark") String remark);
 }

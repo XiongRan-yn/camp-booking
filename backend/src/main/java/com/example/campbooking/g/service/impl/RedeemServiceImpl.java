@@ -1,18 +1,18 @@
 package com.example.campbooking.g.service.impl;
 
 import com.example.campbooking.common.BusinessException;
+// import com.example.campbooking.entity.PointsRecord;   // 【待 F 交付后启用】
 import com.example.campbooking.entity.User;
 import com.example.campbooking.g.dto.RedeemRequest;
 import com.example.campbooking.g.entity.Coupon;
-import com.example.campbooking.g.entity.PointsRecord;
 import com.example.campbooking.g.entity.RedemptionCode;
 import com.example.campbooking.g.entity.UserCoupon;
-import com.example.campbooking.g.mapper.PointsRecordMapper;
 import com.example.campbooking.g.mapper.RedeemMapper;
 import com.example.campbooking.g.mapper.RedemptionCodeMapper;
 import com.example.campbooking.g.security.SecurityUtils;
 import com.example.campbooking.g.service.RedeemService;
 import com.example.campbooking.g.vo.RedeemResultVO;
+// import com.example.campbooking.mapper.PointsRecordMapper;   // 【待 F 交付后启用】
 import com.example.campbooking.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,13 +28,13 @@ public class RedeemServiceImpl implements RedeemService {
     @Autowired
     private RedeemMapper redeemMapper;
 
-    /** F 模块基础 Mapper（G 仅调用不修改）：用于累加用户积分余额 */
+    /** F 模块基础 Mapper（G 仅调用不修改）：累加用户积分余额 */
     @Autowired
     private UserMapper userMapper;
 
-    /** G 模块自有：写入 points_records 积分流水 */
-    @Autowired
-    private PointsRecordMapper pointsRecordMapper;
+//    /** F 模块：写 points_records 积分流水（G 仅注入调用，不得自建同名类，避免 Bean 冲突）【待 F 交付后启用】 */
+//    @Autowired
+//    private PointsRecordMapper pointsRecordMapper;
 
     @Override
     public RedeemResultVO redeem(RedeemRequest request) {
@@ -63,15 +63,15 @@ public class RedeemServiceImpl implements RedeemService {
                 UserCoupon uc = new UserCoupon();
                 uc.setUserId(userId);
                 uc.setCouponId(template.getId());
-                uc.setStatus("usable");   // F 模块只识别 usable
+                uc.setCouponTitle(template.getTitle());   // user_coupons.coupon_title 为 NOT NULL
+                uc.setStatus("usable");                   // F 模块只识别 usable
                 int validDays = template.getValidDays() != null ? template.getValidDays() : 30;
                 uc.setExpireAt(now.plusDays(validDays));
-                uc.setCreatedAt(now);
+                // received_at 走数据库默认值，无需 set
                 redeemMapper.insertUserCoupon(uc);
 
                 redemptionCodeMapper.markUsed(rc.getId(), userId, now);
-                String name = "free_room".equals(rc.getType()) ? "免费房券" : "优惠券";
-                return RedeemResultVO.success(code, name, uc.getExpireAt());
+                return RedeemResultVO.success(code, template.getTitle(), uc.getExpireAt());
 
             case "points":
                 // SUMMER2024：code_value='200'，真正 +200 积分
@@ -83,15 +83,19 @@ public class RedeemServiceImpl implements RedeemService {
                     user.setPointsBalance(bal + gained);
                     userMapper.updateById(user);
                 }
-                // 2) 写入积分流水 points_records
-                PointsRecord pr = new PointsRecord();
-                pr.setUserId(userId);
-                pr.setAmount(gained);
-                pr.setType("earn");
-                pr.setSource(code);
-                pr.setRemark("兑换码积分");
-                pr.setCreatedAt(now);
-                pointsRecordMapper.insert(pr);
+                // 2) 写积分流水 points_records。
+                //    F 的 PointsRecord/PointsRecordMapper 暂未交付，先用 G 自己的 RedeemMapper 直写同一张表：
+                //    列与 F 实体完全一致，F 的 /api/points/records 上线后即可读到这条记录。
+                redeemMapper.insertPointsRecord(userId, gained, code, "兑换码积分");
+                // 【F 代码并入后切换】删除上面一行兜底调用，取消下面注释：
+//                PointsRecord pr = new PointsRecord();
+//                pr.setUserId(userId);
+//                pr.setAmount(gained);
+//                pr.setType("earn");
+//                pr.setSource(code);
+//                pr.setRemark("兑换码积分");
+//                pr.setCreatedAt(now);
+//                pointsRecordMapper.insert(pr);
 
                 redemptionCodeMapper.markUsed(rc.getId(), userId, now);
                 RedeemResultVO vo = new RedeemResultVO();
