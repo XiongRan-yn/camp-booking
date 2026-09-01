@@ -36,4 +36,11 @@
         VALUES (#{userId}, #{couponId}, #{couponTitle}, #{status}, #{expireAt})
     </insert>
 
+    <!-- 积分流水兜底写入：F 的 PointsRecordMapper 未并入前由 G 直写 points_records。
+         type 固定 'earn'，created_at 走数据库默认值；列与 F 实体一致，F 查询接口可直接读到 -->
+    <insert id="insertPointsRecord">
+        INSERT INTO points_records (user_id, amount, type, source, remark)
+        VALUES (#{userId}, #{amount}, 'earn', #{source}, #{remark})
+    </insert>
+
 </mapper>

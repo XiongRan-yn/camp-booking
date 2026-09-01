@@ -1,7 +1,7 @@
 package com.example.campbooking.g.service.impl;
 
 import com.example.campbooking.common.BusinessException;
-// import com.example.campbooking.entity.PointsRecord;
+// import com.example.campbooking.entity.PointsRecord;   // 【待 F 交付后启用】
 import com.example.campbooking.entity.User;
 import com.example.campbooking.g.dto.RedeemRequest;
 import com.example.campbooking.g.entity.Coupon;
@@ -12,7 +12,7 @@ import com.example.campbooking.g.mapper.RedemptionCodeMapper;
 import com.example.campbooking.g.security.SecurityUtils;
 import com.example.campbooking.g.service.RedeemService;
 import com.example.campbooking.g.vo.RedeemResultVO;
-// import com.example.campbooking.mapper.PointsRecordMapper;
+// import com.example.campbooking.mapper.PointsRecordMapper;   // 【待 F 交付后启用】
 import com.example.campbooking.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class RedeemServiceImpl implements RedeemService {
     @Autowired
     private UserMapper userMapper;
 
-//    /** F 模块：写 points_records 积分流水（G 不得自建同名类，避免 Bean 冲突） */
+//    /** F 模块：写 points_records 积分流水（G 仅注入调用，不得自建同名类，避免 Bean 冲突）【待 F 交付后启用】 */
 //    @Autowired
 //    private PointsRecordMapper pointsRecordMapper;
 
@@ -83,7 +83,11 @@ public class RedeemServiceImpl implements RedeemService {
                     user.setPointsBalance(bal + gained);
                     userMapper.updateById(user);
                 }
-                // 2) 写积分流水 points_records（用 F 的实体/Mapper）
+                // 2) 写积分流水 points_records。
+                //    F 的 PointsRecord/PointsRecordMapper 暂未交付，先用 G 自己的 RedeemMapper 直写同一张表：
+                //    列与 F 实体完全一致，F 的 /api/points/records 上线后即可读到这条记录。
+                redeemMapper.insertPointsRecord(userId, gained, code, "兑换码积分");
+                // 【F 代码并入后切换】删除上面一行兜底调用，取消下面注释：
 //                PointsRecord pr = new PointsRecord();
 //                pr.setUserId(userId);
 //                pr.setAmount(gained);
