@@ -16,4 +16,10 @@ public interface ReviewService {
 
     /** 按对象查评价列表：targetType = hotel|dynamic，targetId 为对象 id */
     List<Review> listByTarget(String targetType, Long targetId);
+
+    /**
+     * 评价列表：传 targetType+targetId 按对象查；
+     * 不传则查当前用户的评价（可选按 type 过滤）
+     */
+    List<Review> list(String targetType, Long targetId, String type);
 }

@@ -27,10 +27,11 @@ public class ReviewController {
         return Result.success();
     }
 
-    /** 按对象查评价：targetType=hotel|dynamic，targetId=对象 id */
+    /** 评价列表：传 targetType+targetId 按对象查；不传则查当前用户的评价 */
     @GetMapping
-    public Result<List<Review>> listByTarget(@RequestParam String targetType,
-                                             @RequestParam Long targetId) {
-        return Result.success(reviewService.listByTarget(targetType, targetId));
+    public Result<List<Review>> list(@RequestParam(required = false) String targetType,
+                                     @RequestParam(required = false) Long targetId,
+                                     @RequestParam(required = false) String type) {
+        return Result.success(reviewService.list(targetType, targetId, type));
     }
 }

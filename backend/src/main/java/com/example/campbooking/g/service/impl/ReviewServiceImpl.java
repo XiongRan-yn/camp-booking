@@ -1,5 +1,6 @@
 package com.example.campbooking.g.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.campbooking.common.BusinessException;
 import com.example.campbooking.g.dto.ReviewRequest;
 import com.example.campbooking.g.entity.Review;
@@ -76,5 +77,20 @@ public class ReviewServiceImpl implements ReviewService {
             throw new BusinessException(400, "targetType 仅支持 hotel 或 dynamic");
         }
         return reviewMapper.selectByTarget(targetType, targetId);
+    }
+
+    @Override
+    public List<Review> list(String targetType, Long targetId, String type) {
+        if (targetType != null && targetId != null) {
+            return listByTarget(targetType, targetId);
+        }
+        Long userId = SecurityUtils.getCurrentUserId();
+        QueryWrapper<Review> qw = new QueryWrapper<>();
+        qw.eq("user_id", userId);
+        if (type != null && !type.isEmpty()) {
+            qw.eq("type", type);
+        }
+        qw.orderByDesc("created_at");
+        return reviewMapper.selectList(qw);
     }
 }

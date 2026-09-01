@@ -3,7 +3,7 @@
     <van-nav-bar title="我的" fixed placeholder />
 
     <!-- 用户信息卡片 -->
-    <div class="user-card">
+    <div class="user-card" :class="{ 'user-card--login': !isLoggedIn }" @click="!isLoggedIn && go('/login')">
       <div class="user-card__avatar">
         <img v-if="userAvatar" :src="userAvatar" alt="头像" />
         <van-icon v-else name="user-o" size="28" color="#ffffff" />
@@ -15,7 +15,7 @@
         </template>
         <template v-else>
           <div class="user-card__name">未登录</div>
-          <div class="user-card__sub">登录后可同步收藏与订单</div>
+          <div class="user-card__sub">点击登录 / 注册，同步收藏与订单</div>
         </template>
       </div>
     </div>
@@ -39,9 +39,8 @@
     </van-cell-group>
 
     <!-- 底部 TabBar -->
-    <van-tabbar route fixed placeholder>
+        <van-tabbar route fixed placeholder>
       <van-tabbar-item replace to="/home" icon="wap-home-o">首页</van-tabbar-item>
-      <van-tabbar-item replace to="/booking" icon="shop-o">预订</van-tabbar-item>
       <van-tabbar-item replace to="/mine" icon="user-o">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -90,6 +89,7 @@ onMounted(() => {
   padding-bottom: 60px;
 }
 
+.user-card--login { cursor: pointer; }
 .user-card {
   display: flex;
   align-items: center;

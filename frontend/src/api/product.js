@@ -1,17 +1,11 @@
-import request from './request';
+import request from "./request";
 
-/**
- * 商品列表
- * @param {Object} params - { category, subCategory, keyword, page, pageSize }
- */
-export function getProductList(params = {}) {
-    return request.get('/products', { params });
+// 商品列表（公开接口，无需登录）
+export function getProducts(params = {}) {
+  return request.get("/products", { params });
 }
 
-/**
- * 商品详情
- * @param {number|string} id - 商品ID
- */
+// 商品详情
 export function getProductDetail(id) {
-    return request.get(`/products/${id}`);
+  return request.get(`/products/${id}`);
 }

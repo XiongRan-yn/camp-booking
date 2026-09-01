@@ -1,16 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-  { path: "/", redirect: "/booking" },
+  // 打开即进入「我的」（B 模块的首页/预订未交付，暂不开放入口）
+  { path: "/", redirect: "/home" },
   {
     path: "/home",
     name: "Home",
     component: () => import("@/views/home/HomePage.vue"),
-  },
-  {
-    path: "/booking",
-    name: "Booking",
-    component: () => import("@/views/booking/BookingPage.vue"),
   },
   {
     path: "/mine",
@@ -20,22 +16,43 @@ const routes = [
   {
     path: "/product/:id",
     name: "ProductDetail",
-    component: () => import("@/views/product-detail/ProductDetail.vue"),
+    component: () => import("@/views/ProductDetail/ProductDetail.vue"),
   },
   {
     path: "/checkout",
     name: "Checkout",
-    component: () => import("@/views/checkout/CheckoutPage.vue"),
-  },
-  {
-    path: "/order-list",
-    name: "OrderList",
-    component: () => import("@/views/order-list/OrderList.vue"),
+    component: () => import("@/views/Checkout/CheckoutPage.vue"),
   },
   {
     path: "/favorites",
     name: "Favorites",
     component: () => import("@/views/favorites/FavoritesPage.vue"),
+  },
+  {
+    path: "/traveler-info",
+    name: "TravelerInfo",
+    component: () => import("@/views/traveler-info/TravelerInfo.vue"),
+  },
+  {
+    path: "/reviews",
+    name: "Reviews",
+    component: () => import("@/views/reviews/ReviewsPage.vue"),
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: () => import("@/views/settings/SettingsPage.vue"),
+  },
+  {
+    path: "/feedback",
+    name: "Feedback",
+    component: () => import("@/views/feedback/FeedbackPage.vue"),
+  },
+  // ===== E 模块（订单/领券/卡券/积分/兑换）=====
+  {
+    path: "/order-list",
+    name: "OrderList",
+    component: () => import("@/views/order-list/OrderList.vue"),
   },
   {
     path: "/coupon-center",
@@ -53,29 +70,21 @@ const routes = [
     component: () => import("@/views/points-mall/PointsMall.vue"),
   },
   {
-    path: "/traveler-info",
-    name: "TravelerInfo",
-    component: () => import("@/views/traveler-info/TravelerInfo.vue"),
-  },
-  {
     path: "/redeem",
     name: "Redeem",
     component: () => import("@/views/redeem/RedeemPage.vue"),
   },
   {
-    path: "/reviews",
-    name: "Reviews",
-    component: () => import("@/views/reviews/ReviewsPage.vue"),
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/LoginPage.vue"),
   },
+  // 未知路径兜底
   {
-    path: "/settings",
-    name: "Settings",
-    component: () => import("@/views/settings/SettingsPage.vue"),
-  },
-  {
-    path: "/feedback",
-    name: "Feedback",
-    component: () => import("@/views/feedback/FeedbackPage.vue"),
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import("@/views/PlaceholderPage.vue"),
+    meta: { owner: "页面不存在或未交付" },
   },
 ];
 

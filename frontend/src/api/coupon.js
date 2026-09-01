@@ -21,7 +21,7 @@ export function receiveCoupon(id) {
  * @param {Object} params - { type, status }
  */
 export function getMyCoupons(params = {}) {
-    return request.get('/coupons/mine', { params });
+    return request.get('/coupons/my', { params });
 }
 
 /**
@@ -29,5 +29,5 @@ export function getMyCoupons(params = {}) {
  * @param {number} amount - 订单金额（用于过滤门槛）
  */
 export function getUsableCoupons(amount) {
-    return request.get('/coupons/usable', { params: { amount } });
+    return request.get('/coupons/available', { params: { totalPrice: amount } });
 }

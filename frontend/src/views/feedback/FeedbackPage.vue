@@ -58,7 +58,7 @@ async function handleSubmit() {
   }
   submitting.value = true;
   try {
-    const res = await request.post("/feedbacks", {
+    const res = await request.post("/feedback", {
       content,
       email: form.email.trim(),
     });

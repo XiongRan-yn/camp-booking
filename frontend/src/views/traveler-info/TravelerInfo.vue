@@ -111,6 +111,7 @@ function openCreate() {
 function openEdit(item) {
   editingId.value = item.id;
   Object.assign(form, {
+    id: item.id,
     name: item.name || "",
     phone: item.phone || "",
     idCard: item.idCard || "",
@@ -147,7 +148,7 @@ async function handleSave() {
   const payload = { ...form, age: Number(form.age) };
   try {
     const res = editingId.value
-      ? await request.put(`/travelers/${editingId.value}`, payload)
+      ? await request.put("/travelers", payload)
       : await request.post("/travelers", payload);
     if (res.code === 0) {
       showToast("保存成功");

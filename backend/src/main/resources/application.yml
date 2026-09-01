@@ -19,6 +19,7 @@ spring:
     init:
       mode: always
       continue-on-error: true
+      encoding: UTF-8
       schema-locations: classpath:schema.sql
       data-locations: classpath:data.sql
 

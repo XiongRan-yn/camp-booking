@@ -23,13 +23,24 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (res) => res.data,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    // 未登录 / 登录过期（401、403）→ 清空登录态并跳转登录页
+    // 登录、注册接口本身除外，避免登录失败时被反复重定向
+    if ((status === 401 || status === 403) && !isAuthUrl(error.config?.url)) {
       const userStore = useUserStore();
       userStore.logout();
-      router.push("/mine");
+      const current = router.currentRoute.value;
+      router.push({
+        path: "/login",
+        query: current.path && current.path !== "/login" ? { redirect: current.fullPath } : {},
+      });
     }
     return Promise.reject(error.response?.data || error);
   },
 );
+
+function isAuthUrl(url = "") {
+  return url.includes("/auth/login") || url.includes("/auth/register");
+}
 
 export default request;

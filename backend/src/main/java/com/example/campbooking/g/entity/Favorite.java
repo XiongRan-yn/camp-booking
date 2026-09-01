@@ -29,6 +29,10 @@ public class Favorite {
     @TableField("created_at")
     private LocalDateTime createdAt;
 
+    /** 非表字段：收藏对象标题（联表查询填充） */
+    @TableField(exist = false)
+    private String targetTitle;
+
     public Long getId() {
         return id;
     }
@@ -63,6 +67,14 @@ public class Favorite {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getTargetTitle() {
+        return targetTitle;
+    }
+
+    public void setTargetTitle(String targetTitle) {
+        this.targetTitle = targetTitle;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
