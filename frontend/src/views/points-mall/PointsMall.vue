@@ -18,7 +18,7 @@
     <van-cell title="去兑换中心" icon="gift-o" is-link to="/redeem" />
 
     <van-tabs v-model:active="activeTab">
-      <van-tab title="积分明细" value="records" />
+      <van-tab title="积分明细" name="records" />
     </van-tabs>
 
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多记录了" @load="loadRecords">

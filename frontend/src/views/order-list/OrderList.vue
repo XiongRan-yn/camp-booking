@@ -2,11 +2,11 @@
   <div class="order-page">
     <van-nav-bar title="我的订单" fixed placeholder />
     <van-tabs v-model:active="activeTab" @change="onRefresh">
-      <van-tab title="全部" value="" />
-      <van-tab title="待支付" value="pending" />
-      <van-tab title="已支付" value="paid" />
-      <van-tab title="已完成" value="completed" />
-      <van-tab title="已取消" value="cancelled" />
+      <van-tab title="全部" name="" />
+      <van-tab title="待支付" name="pending" />
+      <van-tab title="已支付" name="paid" />
+      <van-tab title="已完成" name="completed" />
+      <van-tab title="已取消" name="cancelled" />
     </van-tabs>
 
     <div class="search-wrap">

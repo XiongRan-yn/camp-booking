@@ -2,9 +2,9 @@
   <div class="coupon-wallet-page">
     <van-nav-bar title="卡券包" fixed placeholder />
     <van-tabs v-model:active="activeTab">
-      <van-tab title="未使用" value="usable" />
-      <van-tab title="已使用" value="used" />
-      <van-tab title="已过期" value="expired" />
+      <van-tab title="未使用" name="usable" />
+      <van-tab title="已使用" name="used" />
+      <van-tab title="已过期" name="expired" />
     </van-tabs>
 
     <div class="coupon-list">
