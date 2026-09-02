@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.campbooking.g.mapper.ReviewMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.campbooking.g.entity.Review">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="type" property="type"/>
+        <result column="product_id" property="productId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="rating" property="rating"/>
+        <result column="content" property="content"/>
+        <result column="images" property="images"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="nickname" property="nickname"/>
+        <result column="product_title" property="productTitle"/>
+    </resultMap>
+
+    <select id="selectByTarget" resultMap="BaseResultMap">
+        SELECT r.id, r.user_id, r.type, r.product_id, r.order_id, r.rating, r.content, r.images, r.created_at,
+               u.nickname AS nickname, p.title AS product_title
+        FROM reviews r
+        LEFT JOIN users u ON u.id = r.user_id
+        LEFT JOIN products p ON p.id = r.product_id
+        WHERE r.type = #{targetType}
+        AND r.product_id = #{targetId}
+        ORDER BY r.id DESC
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT r.id, r.user_id, r.type, r.product_id, r.order_id, r.rating, r.content, r.images, r.created_at,
+               u.nickname AS nickname, p.title AS product_title
+        FROM reviews r
+        LEFT JOIN users u ON u.id = r.user_id
+        LEFT JOIN products p ON p.id = r.product_id
+        WHERE r.user_id = #{userId}
+        ORDER BY r.id DESC
+    </select>
+
+</mapper>

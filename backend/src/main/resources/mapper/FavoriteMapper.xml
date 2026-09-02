@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.campbooking.g.mapper.FavoriteMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.campbooking.g.entity.Favorite">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="target_type" property="targetType"/>
+        <result column="target_id" property="targetId"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="target_title" property="targetTitle"/>
+        <result column="target_image" property="targetImage"/>
+        <result column="target_price" property="targetPrice"/>
+    </resultMap>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT f.id, f.user_id, f.target_type, f.target_id, f.created_at,
+               p.title AS target_title, p.cover_image AS target_image, p.min_price AS target_price
+        FROM favorites f
+        LEFT JOIN products p ON p.id = f.target_id
+        WHERE f.user_id = #{userId}
+        ORDER BY f.id DESC
+    </select>
+
+    <select id="selectByUserIdAndType" resultMap="BaseResultMap">
+        SELECT f.id, f.user_id, f.target_type, f.target_id, f.created_at,
+               p.title AS target_title, p.cover_image AS target_image, p.min_price AS target_price
+        FROM favorites f
+        LEFT JOIN products p ON p.id = f.target_id
+        WHERE f.user_id = #{userId}
+          AND f.target_type = #{targetType}
+        ORDER BY f.id DESC
+    </select>
+
+</mapper>

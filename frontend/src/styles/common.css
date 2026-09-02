@@ -1,0 +1,49 @@
+/* 文本截断 */
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 安全区底部 */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 页面容器 */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding-bottom: 50px;
+}
+
+/* 通用卡片 */
+.card {
+  background: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-card);
+  margin: var(--spacing-md);
+  padding: var(--spacing-lg);
+}
+
+/* Flex 布局 */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
