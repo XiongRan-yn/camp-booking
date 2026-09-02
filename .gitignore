@@ -4,6 +4,9 @@ node_modules/
 # Build output
 frontend/dist/
 
+# Vite temp files
+vite.config.js.timestamp-*.mjs
+
 # IDE
 .idea/
 *.iml
