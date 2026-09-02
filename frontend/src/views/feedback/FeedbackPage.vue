@@ -36,9 +36,11 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { showToast } from "vant";
 import request from "@/api/request";
+import { useUserStore } from "@/stores/user";
 import "vant/lib/index.css";
 
 const router = useRouter();
+const userStore = useUserStore();
 const submitting = ref(false);
 const form = reactive({ content: "", email: "" });
 
@@ -47,6 +49,11 @@ function goBack() {
 }
 
 async function handleSubmit() {
+  if (!userStore.isLoggedIn) {
+    showToast("请先登录");
+    router.push({ path: "/login", query: { redirect: "/feedback" } });
+    return;
+  }
   const content = form.content.trim();
   if (!content) {
     showToast("请填写反馈内容");

@@ -50,6 +50,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { showToast } from "vant";
 import request from "@/api/request";
 import { useUserStore } from "@/stores/user";
 import "vant/lib/index.css";
@@ -62,7 +63,18 @@ const nickname = computed(() => userStore.userInfo?.nickname || "用户");
 const userAvatar = computed(() => userStore.userInfo?.avatar || "");
 const pointsBalance = ref(0);
 
+// 需要登录才能访问的页面（未登录统一引导登录）
+const authRequiredPaths = [
+  "/favorites", "/reviews", "/traveler-info", "/order-list",
+  "/coupon-wallet", "/points-mall", "/coupon-center", "/redeem",
+];
+
 function go(path) {
+  if (authRequiredPaths.includes(path) && !isLoggedIn.value) {
+    showToast("请先登录");
+    router.push({ path: "/login", query: { redirect: path } });
+    return;
+  }
   router.push(path);
 }
 
