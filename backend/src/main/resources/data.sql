@@ -23,18 +23,28 @@ UPDATE users SET password = '$2a$10$PQBc2RerCod1MnnLCRa8CuG8L1.ULV1UlGI1viiIaKUX
 WHERE username IN ('admin', 'test');
 
 -- 商品（表非空则跳过）
-INSERT INTO products (title, category, sub_category, min_price, max_price, stock, tags)
+INSERT INTO products (title, category, sub_category, cover_image, min_price, max_price, stock, tags)
 SELECT * FROM (
-    SELECT '星空研学营地','camp','tech',299.00,499.00,50,'["亲子","6-12岁"]'
-    UNION ALL SELECT '森林探险营地','camp','outdoor',399.00,599.00,30,'["亲子","8-14岁"]'
-    UNION ALL SELECT '科学探索营地','camp','science',199.00,399.00,40,'["单飞","5-10岁"]'
-    UNION ALL SELECT '文化传承营地','camp','culture',259.00,459.00,35,'["亲子","7-15岁"]'
-    UNION ALL SELECT '云岭山居民宿','hotel','mountain',388.00,688.00,20,'["山景","大床房"]'
-    UNION ALL SELECT '湖畔观景民宿','hotel','lake',428.00,728.00,15,'["湖景","家庭房"]'
-    UNION ALL SELECT '古镇风情民宿','hotel','town',288.00,488.00,25,'["古镇","标准间"]'
-    UNION ALL SELECT '温泉度假民宿','hotel','spring',588.00,888.00,10,'["温泉","豪华房"]'
+    SELECT '星空研学营地','camp','tech','https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80&auto=format&fit=crop',299.00,499.00,50,'["亲子","6-12岁"]'
+    UNION ALL SELECT '森林探险营地','camp','outdoor','https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80&auto=format&fit=crop',399.00,599.00,30,'["亲子","8-14岁"]'
+    UNION ALL SELECT '科学探索营地','camp','science','https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&q=80&auto=format&fit=crop',199.00,399.00,40,'["单飞","5-10岁"]'
+    UNION ALL SELECT '文化传承营地','camp','culture','https://images.unsplash.com/photo-1526080652727-5b77f74eacd2?w=800&q=80&auto=format&fit=crop',259.00,459.00,35,'["亲子","7-15岁"]'
+    UNION ALL SELECT '云岭山居民宿','hotel','mountain','https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&auto=format&fit=crop',388.00,688.00,20,'["山景","大床房"]'
+    UNION ALL SELECT '湖畔观景民宿','hotel','lake','https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80&auto=format&fit=crop',428.00,728.00,15,'["湖景","家庭房"]'
+    UNION ALL SELECT '古镇风情民宿','hotel','town','https://images.unsplash.com/photo-1528127269322-539801943592?w=800&q=80&auto=format&fit=crop',288.00,488.00,25,'["古镇","标准间"]'
+    UNION ALL SELECT '温泉度假民宿','hotel','spring','https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80&auto=format&fit=crop',588.00,888.00,10,'["温泉","豪华房"]'
 ) seed
 WHERE NOT EXISTS (SELECT 1 FROM products);
+
+-- 幂等补图：老库已有商品时，按 title 补上封面图（避免商品无图）
+UPDATE products SET cover_image = 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80&auto=format&fit=crop' WHERE title = '星空研学营地';
+UPDATE products SET cover_image = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80&auto=format&fit=crop' WHERE title = '森林探险营地';
+UPDATE products SET cover_image = 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&q=80&auto=format&fit=crop' WHERE title = '科学探索营地';
+UPDATE products SET cover_image = 'https://images.unsplash.com/photo-1526080652727-5b77f74eacd2?w=800&q=80&auto=format&fit=crop' WHERE title = '文化传承营地';
+UPDATE products SET cover_image = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&auto=format&fit=crop' WHERE title = '云岭山居民宿';
+UPDATE products SET cover_image = 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80&auto=format&fit=crop' WHERE title = '湖畔观景民宿';
+UPDATE products SET cover_image = 'https://images.unsplash.com/photo-1528127269322-539801943592?w=800&q=80&auto=format&fit=crop' WHERE title = '古镇风情民宿';
+UPDATE products SET cover_image = 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80&auto=format&fit=crop' WHERE title = '温泉度假民宿';
 
 -- 商品规格（表非空则跳过）
 INSERT INTO product_specs (product_id, name, price, original_price, stock)

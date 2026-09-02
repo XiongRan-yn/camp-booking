@@ -36,7 +36,8 @@
     <div v-else class="booking-grid">
       <div v-for="p in filtered" :key="p.id" class="booking-card" @click="goDetail(p.id)">
         <div class="booking-card__thumb">
-          <van-icon name="photo-o" size="48" color="#c8c9cc" />
+          <img v-if="p.coverImage" :src="p.coverImage" class="booking-card__img" alt="" />
+          <van-icon v-else name="photo-o" size="48" color="#c8c9cc" />
           <span v-if="p.isFull" class="booking-card__full">满员</span>
         </div>
         <div class="booking-card__body">
@@ -222,6 +223,14 @@ onMounted(async () => {
   justify-content: center;
   aspect-ratio: 4 / 3;
   background: linear-gradient(135deg, #e8f1fd, #f6f8fb);
+  overflow: hidden;
+}
+
+.booking-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .booking-card__full {

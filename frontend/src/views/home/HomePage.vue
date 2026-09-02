@@ -37,7 +37,8 @@
     <div v-else class="product-grid">
       <div v-for="p in filtered" :key="p.id" class="product-card" @click="goDetail(p.id)">
         <div class="product-card__thumb">
-          <van-icon name="photo-o" size="42" color="#c8c9cc" />
+          <img v-if="p.coverImage" :src="p.coverImage" class="product-card__img" alt="" />
+          <van-icon v-else name="photo-o" size="42" color="#c8c9cc" />
           <span v-if="p.isFull" class="product-card__full">满房</span>
         </div>
         <div class="product-card__body">
@@ -201,6 +202,14 @@ onMounted(async () => {
   justify-content: center;
   aspect-ratio: 4 / 3;
   background: linear-gradient(135deg, #e8f1fd, #f6f8fb);
+  overflow: hidden;
+}
+
+.product-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .product-card__full {
