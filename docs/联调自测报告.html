@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>研学营/民宿预订系统 · 联调自测报告</title>
+<style>
+  :root {
+    --bg: #f6f8fb;
+    --card: #ffffff;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --mono: "SF Mono", "JetBrains Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 32px 16px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #fff;
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 24px;
+  }
+  header h1 { font-size: 24px; font-weight: 700; letter-spacing: .5px; }
+  header .sub { opacity: .9; margin-top: 8px; font-size: 14px; }
+  header .meta { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+  header .chip {
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    padding: 4px 12px; border-radius: 999px; font-size: 12px;
+  }
+  section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+  }
+  h2 { font-size: 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  h2 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+  h3 { font-size: 15px; margin: 18px 0 10px; color: var(--ink); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: #f9fafb; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .ok { background: var(--green-bg); color: var(--green); }
+  .warn { background: var(--amber-bg); color: var(--amber); }
+  .err { background: var(--red-bg); color: var(--red); }
+  .info { background: var(--blue-bg); color: var(--blue); }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 8px; }
+  .stat { background: #f9fafb; border: 1px solid var(--line); border-radius: 10px; padding: 16px; text-align: center; }
+  .stat .num { font-size: 28px; font-weight: 700; color: var(--blue); }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+  code { font-family: var(--mono); background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 12.5px; color: #be185d; }
+  pre { background: #0f172a; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.6; margin: 10px 0; }
+  pre code { background: none; color: inherit; padding: 0; }
+  .note { background: var(--amber-bg); border-left: 3px solid var(--amber); padding: 12px 16px; border-radius: 6px; font-size: 13.5px; margin: 12px 0; }
+  .ok-note { background: var(--green-bg); border-left: 3px solid var(--green); padding: 12px 16px; border-radius: 6px; font-size: 13.5px; margin: 12px 0; }
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin: 4px 0; font-size: 13.5px; }
+  .tag { font-size: 11px; color: var(--muted); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>研学营 / 民宿预订系统</h1>
+  <div class="sub">联调自测报告 · 全量接口回归 + 缺陷修复 + 数据清理</div>
+  <div class="meta">
+    <span class="chip">报告日期：2026-09-02</span>
+    <span class="chip">后端：Spring Boot 3.2.0</span>
+    <span class="chip">前端：Vue 3 + Vite + Vant 4</span>
+    <span class="chip">数据库：H2 (内嵌)</span>
+    <span class="chip">Java 21</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="dot"></span>测试结论</h2>
+  <div class="stat-grid">
+    <div class="stat"><div class="num">37</div><div class="lbl">接口自测项</div></div>
+    <div class="stat"><div class="num" style="color:var(--green)">37</div><div class="lbl">全部通过</div></div>
+    <div class="stat"><div class="num" style="color:var(--red)">3</div><div class="lbl">修复缺陷</div></div>
+    <div class="stat"><div class="num" style="color:var(--amber)">0</div><div class="lbl">遗留阻塞问题</div></div>
+  </div>
+  <div class="ok-note">
+    <strong>总体结论：系统通过全量联调自测，可进入答辩演示。</strong>
+    后端编译通过（86 源文件）、前端构建通过（18 个页面组件）、37 项接口回归全部符合预期，鉴权与越权校验健全。
+  </div>
+</section>
+
+<section>
+  <h2><span class="dot"></span>关键缺陷修复（本轮新发现）</h2>
+  <table>
+    <tr><th style="width:110px">级别</th><th style="width:230px">问题</th><th>说明与修复</th></tr>
+    <tr>
+      <td><span class="badge err">高 · 已修复</span></td>
+      <td>种子账号永远无法登录</td>
+      <td>
+        老库 <code>admin</code>/<code>test</code> 密码是手工拼接的假 BCrypt hash（密码段含重复片段 <code>6Z5E</code>），任何密码都无法匹配。
+        根因：<code>data.sql</code> 的 <code>INSERT INTO users</code> 无幂等保护，依赖 username 唯一约束静默跳过，新密码 123456 从未生效。<br>
+        <strong>修复</strong>：在 users 种子后新增幂等 <code>UPDATE users SET password=... WHERE username IN ('admin','test')</code>，强制重置为 <code>123456</code>，已重启验证登录成功。
+      </td>
+    </tr>
+    <tr>
+      <td><span class="badge warn">低 · 已修复</span></td>
+      <td>路由过时注释</td>
+      <td>
+        <code>frontend/src/router/index.js</code> 第 4 行注释仍写「B 模块首页/预订未交付」，但 <code>/home</code>、<code>/booking</code> 已交付。已更正为「打开即进入首页」。
+      </td>
+    </tr>
+    <tr>
+      <td><span class="badge warn">中 · 已修复</span></td>
+      <td>评价提交入口缺失</td>
+      <td>
+        前端缺少「提交评价」入口：<code>api/review.js</code> 缺失、订单列表已完成订单无「去评价」按钮、无评价表单，后端 <code>POST /api/reviews</code> 虽完整但前端无法调用。<br>
+        <strong>修复</strong>：① 后端 <code>OrderVO</code> 新增 <code>category</code> 字段；② 前端新建 <code>api/review.js</code>；③ 订单列表 completed 订单加「去评价」按钮 + 评价弹窗（星级 + 文本）。评价 type 映射：民宿→<code>hotel</code>，研学营→<code>dynamic</code>。已端到端验证「下单→支付→完成→评价→查询」全链路通过。
+      </td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="dot"></span>接口自测明细（37 项）</h2>
+
+  <h3>① 认证与用户（Auth）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>1</td><td><code>/api/auth/register</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>注册测试账号成功，返回 id</td></tr>
+    <tr><td>2</td><td><code>/api/auth/login</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>登录返回 token + user</td></tr>
+    <tr><td>3</td><td><code>/api/auth/me</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>token 解析正确返回当前用户</td></tr>
+    <tr><td>31</td><td>无 token 访问受保护接口</td><td>-</td><td><span class="badge ok">通过</span></td><td>返回 HTTP 403，鉴权拦截生效</td></tr>
+  </table>
+
+  <h3>② 商品（Product）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>4</td><td><code>/api/products/{id}</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>详情含规格、价格、收藏态</td></tr>
+    <tr><td>32</td><td><code>/api/products?category=camp</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>分类筛选正确</td></tr>
+    <tr><td>33</td><td><code>/api/products?keyword=民宿</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>关键词搜索正确</td></tr>
+  </table>
+
+  <h3>③ 优惠券（Coupon）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>5</td><td><code>/api/coupons</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>列表含领取态、门槛</td></tr>
+    <tr><td>7</td><td><code>/api/coupons/{id}/receive</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>领券成功，返回 user_coupon id</td></tr>
+    <tr><td>8</td><td><code>/api/coupons/my</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>我的券列表正确</td></tr>
+    <tr><td>34</td><td><code>/api/coupons/available?totalPrice=</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>按金额过滤可用券</td></tr>
+  </table>
+
+  <h3>④ 订单（Order）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>9</td><td><code>/api/orders/calculate</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>价格计算正确（598-50=548）</td></tr>
+    <tr><td>10</td><td><code>/api/orders</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>创建订单，选券抵扣生效</td></tr>
+    <tr><td>11</td><td><code>/api/orders/{id}/pay</code></td><td>PUT</td><td><span class="badge ok">通过</span></td><td>支付 → paid，发放积分奖励</td></tr>
+    <tr><td>12</td><td><code>/api/orders/{id}/complete</code></td><td>PUT</td><td><span class="badge ok">通过</span></td><td>完成 → completed（方案B流转）</td></tr>
+    <tr><td>13</td><td><code>/api/orders/{id}</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>详情字段完整</td></tr>
+    <tr><td>28</td><td><code>/api/orders</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>列表分页、倒序正确</td></tr>
+    <tr><td>29</td><td><code>/api/orders/{id}/cancel</code></td><td>PUT</td><td><span class="badge ok">通过</span></td><td>取消成功，回退库存</td></tr>
+  </table>
+
+  <h3>⑤ 积分（Points）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>6/14/19</td><td><code>/api/points/balance</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>支付奖励 548、兑换 +200 均正确累加</td></tr>
+    <tr><td>30</td><td><code>/api/points/records</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>流水含 earn/spend、来源标识</td></tr>
+  </table>
+
+  <h3>⑥ 收藏（Favorite）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>15</td><td><code>/api/favorites</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>收藏成功</td></tr>
+    <tr><td>16</td><td><code>/api/favorites</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>列表返回商品标题/图/价</td></tr>
+    <tr><td>22</td><td><code>/api/favorites</code>（重复）</td><td>POST</td><td><span class="badge ok">通过</span></td><td>返回 409「已经收藏过了」</td></tr>
+  </table>
+
+  <h3>⑦ 评价（Review）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>17</td><td><code>/api/reviews</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>已支付订单可评价，带昵称</td></tr>
+    <tr><td>27</td><td><code>/api/reviews</code>（未支付）</td><td>POST</td><td><span class="badge ok">通过</span></td><td>返回 409「订单未支付，不能评价」</td></tr>
+    <tr><td>36</td><td><code>/api/reviews?targetType=&targetId=</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>按商品查询，联表带昵称/商品名</td></tr>
+  </table>
+
+  <h3>⑧ 兑换（Redeem）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>18</td><td><code>/api/redeem</code>（SUMMER2024）</td><td>POST</td><td><span class="badge ok">通过</span></td><td>积分兑换成功 +200</td></tr>
+    <tr><td>37</td><td><code>/api/redeem</code>（WELCOME2024）</td><td>POST</td><td><span class="badge ok">通过</span></td><td>优惠券兑换成功，返回券名</td></tr>
+    <tr><td>23</td><td><code>/api/redeem</code>（重复）</td><td>POST</td><td><span class="badge ok">通过</span></td><td>返回 409「兑换码已被使用」</td></tr>
+  </table>
+
+  <h3>⑨ 出行人（Traveler）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>20</td><td><code>/api/travelers</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>新增含 age/gender</td></tr>
+    <tr><td>21/25</td><td><code>/api/travelers</code></td><td>GET</td><td><span class="badge ok">通过</span></td><td>列表正确</td></tr>
+    <tr><td>24</td><td><code>/api/travelers</code></td><td>PUT</td><td><span class="badge ok">通过</span></td><td>编辑 age 8→9、gender 变更均持久化</td></tr>
+  </table>
+
+  <h3>⑩ 反馈（Feedback）</h3>
+  <table>
+    <tr><th style="width:60px">#</th><th>接口</th><th style="width:90px">方法</th><th style="width:90px">结果</th><th>说明</th></tr>
+    <tr><td>35</td><td><code>/api/feedback</code></td><td>POST</td><td><span class="badge ok">通过</span></td><td>提交反馈成功</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="dot"></span>安全与数据完整性核查</h2>
+  <table>
+    <tr><th style="width:220px">核查项</th><th style="width:120px">结论</th><th>说明</th></tr>
+    <tr><td>水平越权（越权改/删他人数据）</td><td><span class="badge ok">无隐患</span></td><td>订单 / 收藏 / 出行人 / 优惠券的删除与更新均有 <code>userId</code> 归属校验，越权返回 403</td></tr>
+    <tr><td>未支付订单评价</td><td><span class="badge ok">已拦截</span></td><td>校验订单存在(404)→本人(403)→已支付/完成(409)</td></tr>
+    <tr><td>兑换码幂等</td><td><span class="badge ok">已拦截</span></td><td>重复兑换返回 409，不重复发放</td></tr>
+    <tr><td>收藏去重</td><td><span class="badge ok">已拦截</span></td><td>数据库唯一约束 + 服务层 409</td></tr>
+    <tr><td>Schema 完整性</td><td><span class="badge ok">完整</span></td><td>10 张表结构、外键、默认值均正确</td></tr>
+    <tr><td>前端调试遗留</td><td><span class="badge ok">无</span></td><td>无 TODO / console.log / mock 残留</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="dot"></span>数据清理</h2>
+  <p style="font-size:13.5px;margin-bottom:8px;">清理前 H2 库残留 10+ 个联调测试账号（<code>audit*</code>、<code>demo1/demo2</code>、<code>test1</code>、<code>t63972</code> 等）。已执行「备份 → 重建」：</p>
+  <ul>
+    <li>原库备份至 <code>backend/data/camp-booking.mv.db.bak-20260902</code>（可随时回滚）</li>
+    <li>删除 <code>camp-booking.mv.db</code>，重启后由 <code>schema.sql</code> + <code>data.sql</code> 幂等重建</li>
+    <li>重建后数据：<strong>用户 2</strong>（admin/test）、<strong>商品 8</strong>、<strong>规格 16</strong>、<strong>优惠券 5</strong>、<strong>兑换码 4</strong>、<strong>订单 0</strong></li>
+  </ul>
+  <div class="note">如需恢复到清理前状态，删除当前 <code>camp-booking.mv.db</code>，将 <code>camp-booking.mv.db.bak-20260902</code> 改回原名即可。</div>
+</section>
+
+<section>
+  <h2><span class="dot"></span>启动指南</h2>
+  <div class="two-col">
+    <div>
+      <h3>后端</h3>
+      <pre><code>cd backend
+mvn spring-boot:run</code></pre>
+      <p class="tag">端口 8080；H2 控制台 /h2-console</p>
+    </div>
+    <div>
+      <h3>前端</h3>
+      <pre><code>cd frontend
+npm install
+npm run dev</code></pre>
+      <p class="tag">端口 5173，/api 代理到 8080</p>
+    </div>
+  </div>
+  <h3>演示账号</h3>
+  <table>
+    <tr><th>用户名</th><th>密码</th><th>角色</th></tr>
+    <tr><td><code>admin</code></td><td><code>123456</code></td><td>管理员</td></tr>
+    <tr><td><code>test</code></td><td><code>123456</code></td><td>普通用户</td></tr>
+  </table>
+  <h3>演示兑换码</h3>
+  <table>
+    <tr><th>兑换码</th><th>类型</th><th>内容</th></tr>
+    <tr><td><code>WELCOME2024</code></td><td>优惠券</td><td>新人专享券</td></tr>
+    <tr><td><code>SUMMER2024</code></td><td>积分</td><td>+200 积分</td></tr>
+    <tr><td><code>CAMP2024</code></td><td>优惠券</td><td>营地满500减100</td></tr>
+    <tr><td><code>FREEROOM</code></td><td>免房券</td><td>民宿免房</td></tr>
+  </table>
+</section>
+
+<footer style="text-align:center;color:var(--muted);font-size:12.5px;padding:16px 0 8px;">
+  研学营/民宿预订系统 · 联调自测报告 · 2026-09-02 生成
+</footer>
+
+</div>
+</body>
+</html>

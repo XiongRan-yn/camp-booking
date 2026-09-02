@@ -9,12 +9,14 @@
         <result column="name" property="name"/>
         <result column="id_card" property="idCard"/>
         <result column="phone" property="phone"/>
+        <result column="age" property="age"/>
+        <result column="gender" property="gender"/>
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT id, user_id, name, id_card, phone, created_at, updated_at
+        SELECT id, user_id, name, id_card, phone, age, gender, created_at, updated_at
         FROM travelers
         WHERE user_id = #{userId}
         ORDER BY id DESC

@@ -27,6 +27,7 @@ export function getMyCoupons(params = {}) {
 /**
  * 下单可用券
  * @param {number} amount - 订单金额（用于过滤门槛）
+ * 注意：后端 /coupons/available 返回 Result<List>，data 直接是数组
  */
 export function getUsableCoupons(amount) {
     return request.get('/coupons/available', { params: { totalPrice: amount } });

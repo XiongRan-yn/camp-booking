@@ -42,6 +42,14 @@ public class Review {
     @TableField("created_at")
     private LocalDateTime createdAt;
 
+    /** 非表字段：评价人昵称（联 users 表填充） */
+    @TableField(exist = false)
+    private String nickname;
+
+    /** 非表字段：商品标题（联 products 表填充） */
+    @TableField(exist = false)
+    private String productTitle;
+
     public Long getId() {
         return id;
     }
@@ -112,5 +120,21 @@ public class Review {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getProductTitle() {
+        return productTitle;
+    }
+
+    public void setProductTitle(String productTitle) {
+        this.productTitle = productTitle;
     }
 }

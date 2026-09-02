@@ -9,6 +9,7 @@ public class OrderVO {
     private Long productId;
     private String productTitle;
     private String productImage;
+    private String category;
     private Long specId;
     private String specName;
     private Integer quantity;
@@ -22,6 +23,7 @@ public class OrderVO {
     private String remark;
     private String status;
     private LocalDateTime paidAt;
+    private LocalDateTime completedAt;
     private LocalDateTime createdAt;
 
     public OrderVO() {}
@@ -36,6 +38,8 @@ public class OrderVO {
     public void setProductTitle(String productTitle) { this.productTitle = productTitle; }
     public String getProductImage() { return productImage; }
     public void setProductImage(String productImage) { this.productImage = productImage; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
     public Long getSpecId() { return specId; }
     public void setSpecId(Long specId) { this.specId = specId; }
     public String getSpecName() { return specName; }
@@ -62,6 +66,8 @@ public class OrderVO {
     public void setStatus(String status) { this.status = status; }
     public LocalDateTime getPaidAt() { return paidAt; }
     public void setPaidAt(LocalDateTime paidAt) { this.paidAt = paidAt; }
+    public LocalDateTime getCompletedAt() { return completedAt; }
+    public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

@@ -33,6 +33,14 @@ public class Favorite {
     @TableField(exist = false)
     private String targetTitle;
 
+    /** 非表字段：收藏对象封面图（联表查询填充） */
+    @TableField(exist = false)
+    private String targetImage;
+
+    /** 非表字段：收藏对象起价（联表查询填充） */
+    @TableField(exist = false)
+    private java.math.BigDecimal targetPrice;
+
     public Long getId() {
         return id;
     }
@@ -75,6 +83,22 @@ public class Favorite {
 
     public void setTargetTitle(String targetTitle) {
         this.targetTitle = targetTitle;
+    }
+
+    public String getTargetImage() {
+        return targetImage;
+    }
+
+    public void setTargetImage(String targetImage) {
+        this.targetImage = targetImage;
+    }
+
+    public java.math.BigDecimal getTargetPrice() {
+        return targetPrice;
+    }
+
+    public void setTargetPrice(java.math.BigDecimal targetPrice) {
+        this.targetPrice = targetPrice;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

@@ -6,6 +6,8 @@ import com.example.campbooking.common.BusinessException;
 import com.example.campbooking.common.PageResult;
 import com.example.campbooking.entity.Product;
 import com.example.campbooking.entity.ProductSpec;
+import com.example.campbooking.g.entity.Favorite;
+import com.example.campbooking.g.mapper.FavoriteMapper;
 import com.example.campbooking.mapper.ProductMapper;
 import com.example.campbooking.mapper.ProductSpecMapper;
 import com.example.campbooking.service.ProductService;
@@ -25,11 +27,13 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
     private final ProductSpecMapper specMapper;
+    private final FavoriteMapper favoriteMapper;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ProductServiceImpl(ProductMapper productMapper, ProductSpecMapper specMapper) {
+    public ProductServiceImpl(ProductMapper productMapper, ProductSpecMapper specMapper, FavoriteMapper favoriteMapper) {
         this.productMapper = productMapper;
         this.specMapper = specMapper;
+        this.favoriteMapper = favoriteMapper;
     }
 
     @Override
@@ -83,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
         vo.setMinPrice(product.getMinPrice());
         vo.setMaxPrice(product.getMaxPrice());
         vo.setIsFull(product.getIsFull() != null && product.getIsFull() == 1);
-        vo.setIsFavorited(false);
+        vo.setIsFavorited(isFavorited(userId, productId));
 
         LambdaQueryWrapper<ProductSpec> specWrapper = new LambdaQueryWrapper<>();
         specWrapper.eq(ProductSpec::getProductId, productId);
@@ -111,5 +115,15 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    private boolean isFavorited(Long userId, Long productId) {
+        if (userId == null) {
+            return false;
+        }
+        LambdaQueryWrapper<Favorite> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Favorite::getUserId, userId);
+        wrapper.eq(Favorite::getTargetId, productId);
+        return favoriteMapper.selectCount(wrapper) > 0;
     }
 }

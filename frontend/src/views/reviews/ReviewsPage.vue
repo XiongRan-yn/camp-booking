@@ -2,11 +2,6 @@
   <div class="page-container reviews-page">
     <van-nav-bar title="我的评价" left-arrow fixed placeholder @click-left="goBack" />
 
-    <van-tabs v-model:active="activeTab" @change="onTabChange">
-      <van-tab title="我的动态" />
-      <van-tab title="酒店评价" />
-    </van-tabs>
-
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-list
         v-model:loading="loading"
@@ -24,6 +19,7 @@
               color="#ffb400"
             />
           </div>
+          <div v-if="item.productTitle" class="review-item__product">{{ item.productTitle }}</div>
           <div class="review-item__content">{{ item.content }}</div>
           <div v-if="item.images && item.images.length" class="review-item__images">
             <van-image
@@ -52,10 +48,8 @@ import request from "@/api/request";
 import "vant/lib/index.css";
 
 const router = useRouter();
-const TAB_TYPES = ["", "hotel"];
 const pageSize = 10;
 
-const activeTab = ref(0);
 const list = ref([]);
 const loading = ref(false);
 const finished = ref(false);
@@ -66,10 +60,6 @@ function goBack() {
   router.back();
 }
 
-function getType() {
-  return TAB_TYPES[activeTab.value];
-}
-
 function formatTime(value) {
   if (!value) return "";
   return String(value).slice(0, 16).replace("T", " ");
@@ -78,14 +68,13 @@ function formatTime(value) {
 async function onLoad() {
   try {
     const res = await request.get("/reviews", {
-      params: { type: getType(), page: page.value, pageSize },
+      params: { page: page.value, pageSize },
     });
     if (res.code === 0) {
       const data = res.data;
       const items = Array.isArray(data) ? data : data?.list || [];
       list.value.push(...items);
-      const total = typeof data === "number" ? data : data?.total ?? 0;
-      finished.value = list.value.length >= total || items.length < pageSize;
+      finished.value = items.length < pageSize;
       page.value += 1;
     } else {
       showToast(res.message || "加载失败");
@@ -106,13 +95,6 @@ function onRefresh() {
   page.value = 1;
   list.value = [];
   onLoad();
-}
-
-function onTabChange() {
-  finished.value = false;
-  loading.value = false;
-  page.value = 1;
-  list.value = [];
 }
 </script>
 
@@ -147,6 +129,12 @@ function onTabChange() {
   line-height: 1.6;
   color: var(--color-text);
   word-break: break-all;
+}
+
+.review-item__product {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
 }
 
 .review-item__images {

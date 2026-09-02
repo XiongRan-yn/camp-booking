@@ -210,10 +210,12 @@ async function handleToggleFavorite() {
     // 取消收藏：先查收藏列表找到对应记录ID
     try {
       if (!favoriteId.value) {
-        const listRes = await getFavoriteList({ type: 'product', page: 1, pageSize: 50 });
+        const listRes = await getFavoriteList({ type: targetType(), page: 1, pageSize: 50 });
         if (listRes.code === 0) {
-          const record = listRes.data.list?.find(
-              (item) => item.targetId === product.value.id && item.targetType === 'product'
+          // 后端 /favorites 返回 Result<List>，data 直接是数组
+          const list = Array.isArray(listRes.data) ? listRes.data : listRes.data?.list || [];
+          const record = list.find(
+              (item) => item.targetId === product.value.id
           );
           if (record) favoriteId.value = record.id;
         }
@@ -232,7 +234,7 @@ async function handleToggleFavorite() {
     try {
       const res = await addFavorite({
         targetId: product.value.id,
-        targetType: 'product'
+        targetType: targetType()
       });
       if (res.code === 0) {
         product.value.isFavorited = true;
@@ -244,6 +246,11 @@ async function handleToggleFavorite() {
       showToast('操作失败');
     }
   }
+}
+
+// 收藏 targetType 与后端约定一致：camp / hotel（对应商品 category）
+function targetType() {
+  return product.value?.category === 'hotel' ? 'hotel' : 'camp';
 }
 
 function handleService() {

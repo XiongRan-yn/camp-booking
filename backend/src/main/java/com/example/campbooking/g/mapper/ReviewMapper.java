@@ -14,4 +14,6 @@ public interface ReviewMapper extends BaseMapper<Review> {
 
     List<Review> selectByTarget(@Param("targetType") String targetType,
                                 @Param("targetId") Long targetId);
+
+    List<Review> selectByUserId(@Param("userId") Long userId);
 }

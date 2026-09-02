@@ -18,6 +18,12 @@ backend/target/
 # H2 database files
 *.mv.db
 *.trace.db
+backend/data/
+
+# Build logs
+build_out.txt
+run.out.log
+run.err.log
 
 # Environment
 .env

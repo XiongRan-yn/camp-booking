@@ -13,6 +13,6 @@ public interface FavoriteService {
     /** 取消收藏（只能取消本人的） */
     void delete(Long id);
 
-    /** 当前登录用户的收藏列表 */
-    List<Favorite> list();
+    /** 当前登录用户的收藏列表（可按 targetType 筛选） */
+    List<Favorite> list(String targetType);
 }

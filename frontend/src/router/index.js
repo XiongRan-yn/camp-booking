@@ -1,12 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-  // 打开即进入「我的」（B 模块的首页/预订未交付，暂不开放入口）
+  // 打开即进入首页
   { path: "/", redirect: "/home" },
   {
     path: "/home",
     name: "Home",
     component: () => import("@/views/home/HomePage.vue"),
+  },
+  {
+    path: "/booking",
+    name: "Booking",
+    component: () => import("@/views/booking/BookingPage.vue"),
   },
   {
     path: "/mine",

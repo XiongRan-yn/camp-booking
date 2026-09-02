@@ -1,6 +1,5 @@
 package com.example.campbooking.g.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.campbooking.common.BusinessException;
 import com.example.campbooking.g.dto.ReviewRequest;
 import com.example.campbooking.g.entity.Review;
@@ -73,8 +72,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<Review> listByTarget(String targetType, Long targetId) {
-        if (!"hotel".equals(targetType) && !"dynamic".equals(targetType)) {
-            throw new BusinessException(400, "targetType 仅支持 hotel 或 dynamic");
+        if (!"hotel".equals(targetType) && !"camp".equals(targetType) && !"dynamic".equals(targetType)) {
+            throw new BusinessException(400, "targetType 仅支持 hotel、camp 或 dynamic");
         }
         return reviewMapper.selectByTarget(targetType, targetId);
     }
@@ -85,12 +84,13 @@ public class ReviewServiceImpl implements ReviewService {
             return listByTarget(targetType, targetId);
         }
         Long userId = SecurityUtils.getCurrentUserId();
-        QueryWrapper<Review> qw = new QueryWrapper<>();
-        qw.eq("user_id", userId);
+        // 查当前用户全部评价（联表带昵称），可选按 type 过滤
+        List<Review> reviews = reviewMapper.selectByUserId(userId);
         if (type != null && !type.isEmpty()) {
-            qw.eq("type", type);
+            return reviews.stream()
+                    .filter(r -> type.equals(r.getType()))
+                    .collect(java.util.stream.Collectors.toList());
         }
-        qw.orderByDesc("created_at");
-        return reviewMapper.selectList(qw);
+        return reviews;
     }
 }

@@ -20,6 +20,12 @@ public class TravelerRequest {
     @NotBlank(message = "手机号不能为空")
     private String phone;
 
+    /** 年龄（选填） */
+    private Integer age;
+
+    /** 性别：male / female（选填） */
+    private String gender;
+
     public Long getId() {
         return id;
     }
@@ -50,5 +56,21 @@ public class TravelerRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

@@ -13,4 +13,6 @@ import java.util.List;
 public interface FavoriteMapper extends BaseMapper<Favorite> {
 
     List<Favorite> selectByUserId(@Param("userId") Long userId);
+
+    List<Favorite> selectByUserIdAndType(@Param("userId") Long userId, @Param("targetType") String targetType);
 }

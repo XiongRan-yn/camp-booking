@@ -26,6 +26,10 @@ public class Traveler {
 
     private String phone;
 
+    private Integer age;
+
+    private String gender;
+
     @TableField("created_at")
     private LocalDateTime createdAt;
 
@@ -70,6 +74,22 @@ public class Traveler {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public LocalDateTime getCreatedAt() {

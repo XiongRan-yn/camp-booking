@@ -37,6 +37,11 @@ public class OrderController {
         return Result.success(orderService.pay(currentUserId(), id));
     }
 
+    @PutMapping("/{id}/complete")
+    public Result<Map<String, Object>> complete(@PathVariable Long id) {
+        return Result.success(orderService.complete(currentUserId(), id));
+    }
+
     @PutMapping("/{id}/cancel")
     public Result<Void> cancel(@PathVariable Long id) {
         orderService.cancel(currentUserId(), id);

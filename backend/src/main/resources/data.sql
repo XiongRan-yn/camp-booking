@@ -3,6 +3,9 @@
 -- 1) 先清理历史重复行  2) 表为空时才插入种子数据
 -- ============================================
 
+-- 老库结构升级（幂等）：订单表补充 completed_at 列（H2 若已存在则跳过）
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS completed_at TIMESTAMP DEFAULT NULL;
+
 -- 清理历史重复数据（每组保留最早一条；已领取的优惠券不删）
 DELETE FROM product_specs WHERE id NOT IN (SELECT MIN(id) FROM product_specs GROUP BY product_id, name);
 DELETE FROM products WHERE id NOT IN (SELECT MIN(id) FROM products GROUP BY title);
@@ -13,6 +16,11 @@ DELETE FROM coupons WHERE id NOT IN (SELECT MIN(id) FROM coupons GROUP BY title)
 INSERT INTO users (username, password, nickname, role) VALUES
 ('admin', '$2a$10$PQBc2RerCod1MnnLCRa8CuG8L1.ULV1UlGI1viiIaKUXCQjZGvhpu', 'admin', 'admin'),
 ('test', '$2a$10$PQBc2RerCod1MnnLCRa8CuG8L1.ULV1UlGI1viiIaKUXCQjZGvhpu', 'testuser', 'user');
+
+-- 幂等修复：老库 admin/test 的密码 hash 是手工拼接的假值（任何密码都无法匹配），
+-- 导致这两个种子账号永远登录失败。此处强制把密码重置为 123456，保证演示可登录。
+UPDATE users SET password = '$2a$10$PQBc2RerCod1MnnLCRa8CuG8L1.ULV1UlGI1viiIaKUXCQjZGvhpu'
+WHERE username IN ('admin', 'test');
 
 -- 商品（表非空则跳过）
 INSERT INTO products (title, category, sub_category, min_price, max_price, stock, tags)

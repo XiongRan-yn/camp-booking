@@ -308,7 +308,9 @@ async function fetchUsableCoupons() {
     const estimateAmount = unitPrice.value * quantity.value;
     const res = await getUsableCoupons(estimateAmount);
     if (res.code === 0) {
-      usableCoupons.value = res.data.list || [];
+      // 后端 /coupons/available 返回 Result<List>，data 直接是数组
+      const list = Array.isArray(res.data) ? res.data : res.data?.list || [];
+      usableCoupons.value = list;
       // 如果当前选中的券不在可用列表中，清除选择
       if (
           selectedCouponId.value &&

@@ -4,8 +4,8 @@
 
     <van-tabs v-model:active="activeTab" @change="onTabChange">
       <van-tab title="全部" />
-      <van-tab title="商品" />
-      <van-tab title="门店" />
+      <van-tab title="研学营" />
+      <van-tab title="民宿" />
     </van-tabs>
 
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
@@ -46,7 +46,7 @@ import request from "@/api/request";
 import "vant/lib/index.css";
 
 const router = useRouter();
-const TAB_TYPES = ["", "product", "store"];
+const TAB_TYPES = ["", "camp", "hotel"];
 const pageSize = 10;
 
 const activeTab = ref(0);

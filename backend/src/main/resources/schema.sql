@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS orders (
     remark          VARCHAR(500)  DEFAULT '',
     status          VARCHAR(20)   DEFAULT 'pending',
     paid_at         TIMESTAMP     DEFAULT NULL,
+    completed_at    TIMESTAMP     DEFAULT NULL,
     created_at      TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id)    REFERENCES users(id),

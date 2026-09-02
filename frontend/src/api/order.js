@@ -47,3 +47,11 @@ export function getOrderDetail(id) {
 export function cancelOrder(id) {
     return request.put(`/orders/${id}/cancel`);
 }
+
+/**
+ * 确认完成订单（paid -> completed）
+ * @param {number|string} id - 订单ID
+ */
+export function completeOrder(id) {
+    return request.put(`/orders/${id}/complete`);
+}

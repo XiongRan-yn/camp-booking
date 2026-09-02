@@ -50,7 +50,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public List<Favorite> list() {
-        return favoriteMapper.selectByUserId(SecurityUtils.getCurrentUserId());
+    public List<Favorite> list(String targetType) {
+        Long userId = SecurityUtils.getCurrentUserId();
+        if (targetType != null && !targetType.isEmpty()) {
+            return favoriteMapper.selectByUserIdAndType(userId, targetType);
+        }
+        return favoriteMapper.selectByUserId(userId);
     }
 }

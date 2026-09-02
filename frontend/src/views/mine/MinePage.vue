@@ -41,6 +41,7 @@
     <!-- 底部 TabBar -->
         <van-tabbar route fixed placeholder>
       <van-tabbar-item replace to="/home" icon="wap-home-o">首页</van-tabbar-item>
+      <van-tabbar-item replace to="/booking" icon="calendar-o">预约</van-tabbar-item>
       <van-tabbar-item replace to="/mine" icon="user-o">我的</van-tabbar-item>
     </van-tabbar>
   </div>

@@ -4,6 +4,16 @@
 
     <van-search v-model="keyword" placeholder="搜索营地 / 民宿" />
 
+    <!-- 报名预约入口横幅 -->
+    <div class="home-booking-banner" @click="goBooking">
+      <van-icon name="calendar-o" size="20" color="#fff" />
+      <div class="home-booking-banner__text">
+        <div class="home-booking-banner__title">报名预约</div>
+        <div class="home-booking-banner__sub">研学营报名 · 民宿预订</div>
+      </div>
+      <van-icon name="arrow" size="16" color="#fff" />
+    </div>
+
     <div class="category-tabs">
       <div
         v-for="cat in categories"
@@ -45,6 +55,7 @@
     <!-- 底部 TabBar -->
     <van-tabbar route fixed placeholder>
       <van-tabbar-item replace to="/home" icon="wap-home-o">首页</van-tabbar-item>
+      <van-tabbar-item replace to="/booking" icon="calendar-o">预约</van-tabbar-item>
       <van-tabbar-item replace to="/mine" icon="user-o">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -91,6 +102,10 @@ function goDetail(id) {
   router.push(`/product/${id}`);
 }
 
+function goBooking() {
+  router.push("/booking");
+}
+
 onMounted(async () => {
   try {
     const res = await getProducts({ page: 1, pageSize: 50 });
@@ -115,6 +130,33 @@ onMounted(async () => {
   gap: 12px;
   padding: 8px 16px;
   overflow-x: auto;
+}
+
+.home-booking-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 16px 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1989fa, #5babfb);
+  color: #fff;
+  cursor: pointer;
+}
+
+.home-booking-banner__text {
+  flex: 1;
+}
+
+.home-booking-banner__title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.home-booking-banner__sub {
+  font-size: 12px;
+  opacity: 0.9;
+  margin-top: 2px;
 }
 
 .category-tab {

@@ -26,6 +26,8 @@ public class TravelerServiceImpl implements TravelerService {
         traveler.setName(request.getName());
         traveler.setIdCard(request.getIdCard());
         traveler.setPhone(request.getPhone());
+        traveler.setAge(request.getAge());
+        traveler.setGender(request.getGender());
         LocalDateTime now = LocalDateTime.now();
         traveler.setCreatedAt(now);
         traveler.setUpdatedAt(now);
@@ -46,6 +48,8 @@ public class TravelerServiceImpl implements TravelerService {
         existing.setName(request.getName());
         existing.setIdCard(request.getIdCard());
         existing.setPhone(request.getPhone());
+        existing.setAge(request.getAge());
+        existing.setGender(request.getGender());
         existing.setUpdatedAt(LocalDateTime.now());
         travelerMapper.updateById(existing);
     }

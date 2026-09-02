@@ -231,6 +231,25 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    public Map<String, Object> complete(Long userId, Long orderId) {
+        Order order = getOwnedOrder(userId, orderId);
+        if (!"paid".equals(order.getStatus())) {
+            throw new BusinessException(400, "订单状态不正确，无法完成");
+        }
+
+        order.setStatus("completed");
+        order.setCompletedAt(LocalDateTime.now());
+        orderMapper.updateById(order);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("orderNo", order.getOrderNo());
+        result.put("status", order.getStatus());
+        result.put("completedAt", order.getCompletedAt());
+        return result;
+    }
+
+    @Override
+    @Transactional
     public void cancel(Long userId, Long orderId) {
         Order order = getOwnedOrder(userId, orderId);
         if (!"pending".equals(order.getStatus())) {
@@ -465,6 +484,7 @@ public class OrderServiceImpl implements OrderService {
         if (product != null) {
             vo.setProductTitle(product.getTitle());
             vo.setProductImage(product.getCoverImage());
+            vo.setCategory(product.getCategory());
         }
         vo.setSpecId(order.getSpecId());
         vo.setSpecName(order.getSpecName());
@@ -479,6 +499,7 @@ public class OrderServiceImpl implements OrderService {
         vo.setRemark(order.getRemark());
         vo.setStatus(order.getStatus());
         vo.setPaidAt(order.getPaidAt());
+        vo.setCompletedAt(order.getCompletedAt());
         vo.setCreatedAt(order.getCreatedAt());
         return vo;
     }

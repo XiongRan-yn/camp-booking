@@ -31,9 +31,9 @@ public class FavoriteController {
         return Result.success();
     }
 
-    /** 当前用户收藏列表 */
+    /** 当前用户收藏列表：type 可选 hotel | camp，不传返回全部 */
     @GetMapping
-    public Result<List<Favorite>> list() {
-        return Result.success(favoriteService.list());
+    public Result<List<Favorite>> list(@RequestParam(required = false) String type) {
+        return Result.success(favoriteService.list(type));
     }
 }
