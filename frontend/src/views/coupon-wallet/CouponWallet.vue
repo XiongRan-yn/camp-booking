@@ -26,9 +26,13 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { showToast } from "vant";
 import { getMyCoupons } from "@/api/coupon";
+import { useUserStore } from "@/stores/user";
 
+const router = useRouter();
+const userStore = useUserStore();
 const activeTab = ref("usable");
 const allCoupons = ref([]);
 
@@ -70,6 +74,11 @@ function tagType(item) {
 }
 
 async function loadCoupons() {
+  if (!userStore.isLoggedIn) {
+    showToast("请先登录");
+    router.push({ path: "/login", query: { redirect: "/coupon-wallet" } });
+    return;
+  }
   try {
     const res = await getMyCoupons();
     if (res.code === 0) {

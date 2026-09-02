@@ -40,7 +40,9 @@
 import { ref, onMounted } from "vue";
 import { showToast } from "vant";
 import { getPointsBalance, getPointsRecords } from "@/api/points";
+import { useUserStore } from "@/stores/user";
 
+const userStore = useUserStore();
 const balance = ref(0);
 const totalEarned = ref(0);
 const totalSpent = ref(0);
@@ -68,6 +70,11 @@ async function loadBalance() {
 }
 
 async function loadRecords() {
+  if (!userStore.isLoggedIn) {
+    finished.value = true;
+    loading.value = false;
+    return;
+  }
   try {
     const res = await getPointsRecords({ page: page.value, pageSize: 20 });
     if (res.code === 0) {

@@ -27,9 +27,13 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { showToast } from "vant";
 import { getCouponList, receiveCoupon } from "@/api/coupon";
+import { useUserStore } from "@/stores/user";
 
+const router = useRouter();
+const userStore = useUserStore();
 const couponList = ref([]);
 
 function moneyText(item) {
@@ -60,6 +64,11 @@ async function loadCoupons() {
 }
 
 async function handleReceive(item) {
+  if (!userStore.isLoggedIn) {
+    showToast("请先登录");
+    router.push({ path: "/login", query: { redirect: "/coupon-center" } });
+    return;
+  }
   try {
     const res = await receiveCoupon(item.id);
     if (res.code === 0) {
@@ -69,7 +78,7 @@ async function handleReceive(item) {
       showToast(res.message || "领取失败");
     }
   } catch (e) {
-    showToast("领取失败");
+    showToast(e?.message || "领取失败");
   }
 }
 

@@ -26,9 +26,13 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { showToast } from "vant";
 import { submitRedeemCode } from "@/api/redeem";
+import { useUserStore } from "@/stores/user";
 
+const router = useRouter();
+const userStore = useUserStore();
 const code = ref("");
 const submitting = ref(false);
 const result = ref(null);
@@ -37,6 +41,11 @@ async function handleSubmit() {
   const input = code.value.trim();
   if (!input) {
     showToast("请输入兑换码");
+    return;
+  }
+  if (!userStore.isLoggedIn) {
+    showToast("请先登录");
+    router.push({ path: "/login", query: { redirect: "/redeem" } });
     return;
   }
   submitting.value = true;
