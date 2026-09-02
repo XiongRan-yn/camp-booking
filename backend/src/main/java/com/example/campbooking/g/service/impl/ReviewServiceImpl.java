@@ -31,7 +31,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void add(ReviewRequest request) {
         Long userId = SecurityUtils.getCurrentUserId();
-        validateOrder(request.getOrderId(), userId);
+        validateOrder(request.getOrderId(), request.getProductId(), userId);
 
         Review review = new Review();
         review.setUserId(userId);
@@ -46,14 +46,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     /**
-     * 校验订单：存在（404）→ 本人（403）→ 已支付（409）。
+     * 校验订单：存在（404）→ 本人（403）→ 已支付（409）→ 商品一致（400）。
      * reviews.order_id 有外键指向 orders(id)，不先校验会让脏数据以 500 外键错误暴露。
      */
-    private void validateOrder(Long orderId, Long userId) {
+    private void validateOrder(Long orderId, Long productId, Long userId) {
         Map<String, Object> order;
         try {
             order = jdbcTemplate.queryForMap(
-                    "SELECT user_id, status FROM orders WHERE id = ?", orderId);
+                    "SELECT user_id, status, product_id FROM orders WHERE id = ?", orderId);
         } catch (EmptyResultDataAccessException e) {
             throw new BusinessException(404, "订单不存在");
         }
@@ -67,6 +67,15 @@ public class ReviewServiceImpl implements ReviewService {
         // orders.status 默认 'pending'，已支付为 'paid'；'completed' 视为已支付过的终态
         if (!"paid".equals(status) && !"completed".equals(status)) {
             throw new BusinessException(409, "订单未支付，不能评价");
+        }
+
+        // 校验评价商品与订单商品一致，防止用 A 商品的订单评价 B 商品
+        Object pid = order.get("product_id");
+        if (pid != null && productId != null) {
+            Long orderProductId = ((Number) pid).longValue();
+            if (!orderProductId.equals(productId)) {
+                throw new BusinessException(400, "评价商品与订单商品不一致");
+            }
         }
     }
 
